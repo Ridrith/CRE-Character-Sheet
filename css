@@ -1,0 +1,139 @@
+/* style.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+.charsheet {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    background-color: #e0e0e0; /* Light grey background */
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.logo {
+    max-height: 252px;
+}
+
+h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.main-content section {
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+}
+
+.field-group {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.field {
+    flex: 1;
+    min-width: 200px;
+    margin-right: 20px;
+    margin-bottom: 10px;
+}
+
+.field label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.field input[type="text"],
+.field input[type="number"],
+.field select {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 10px; /* Rounded corners */
+    box-sizing: border-box;
+}
+
+.field select {
+    font-size: 16px;
+    width: 100%;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #970000;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #970000;
+}
+
+.skills-columns {
+    display: flex;
+    justify-content: space-between;
+}
+
+.skills-column {
+    flex: 1;
+    margin: 0 10px;
+}
+
+.skills-column .field {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.skills-column .field label {
+    display: block;
+    margin-top: 5px;
+    text-align: center;
+}
+
+/* Dice Roll Buttons */
+.dice-rolls .dice-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.dice-button {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #cc0000;
+    color: #000;
+    border: none;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.dice-button:hover {
+    background-color: #970000;
+}
