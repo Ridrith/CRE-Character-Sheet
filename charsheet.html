@@ -255,83 +255,229 @@
 
 <!-- INVENTORY TAB CONTENT -->
 <div class="sheet-tab-content" data-tab="inventory">
-    <div class="sheet-grid">
-        <!-- Currency Section -->
-        <div class="sheet-section" style="grid-column: 1 / -1;">
-            <h3>Currency</h3>
-            <div class="sheet-currency-grid">
-                <div class="sheet-currency-item">
-                    <label for="attr_currency_golm">Golm</label>
-                    <input type="number" name="attr_currency_golm" id="attr_currency_golm" value="0" min="0">
-                </div>
-                <div class="sheet-currency-item">
-                    <label for="attr_currency_mark">Mark</label>
-                    <input type="number" name="attr_currency_mark" id="attr_currency_mark" value="0" min="0">
-                </div>
-                <div class="sheet-currency-item">
-                    <label for="attr_currency_castar">Castar</label>
-                    <input type="number" name="attr_currency_castar" id="attr_currency_castar" value="0" min="0">
-                </div>
-                <div class="sheet-currency-item">
-                    <label for="attr_currency_luminary">Luminary</label>
-                    <input type="number" name="attr_currency_luminary" id="attr_currency_luminary" value="0" min="0">
-                </div>
+    <!-- Currency Section - Full Width -->
+    <div class="sheet-section sheet-currency-section">
+        <h3>Wealth & Currency</h3>
+        <div class="sheet-currency-container">
+            <div class="sheet-currency-item sheet-currency-golm">
+                <div class="sheet-currency-icon">⬡</div>
+                <label for="attr_currency_golm">Golm</label>
+                <input type="number" name="attr_currency_golm" id="attr_currency_golm" value="0" min="0">
+                <span class="sheet-currency-desc">Copper Pieces</span>
+            </div>
+            <div class="sheet-currency-item sheet-currency-mark">
+                <div class="sheet-currency-icon">◆</div>
+                <label for="attr_currency_mark">Mark</label>
+                <input type="number" name="attr_currency_mark" id="attr_currency_mark" value="0" min="0">
+                <span class="sheet-currency-desc">Silver Standard</span>
+            </div>
+            <div class="sheet-currency-item sheet-currency-castar">
+                <div class="sheet-currency-icon">●</div>
+                <label for="attr_currency_castar">Castar</label>
+                <input type="number" name="attr_currency_castar" id="attr_currency_castar" value="0" min="0">
+                <span class="sheet-currency-desc">Gold Coins</span>
+            </div>
+            <div class="sheet-currency-item sheet-currency-luminary">
+                <div class="sheet-currency-icon">✦</div>
+                <label for="attr_currency_luminary">Luminary</label>
+                <input type="number" name="attr_currency_luminary" id="attr_currency_luminary" value="0" min="0">
+                <span class="sheet-currency-desc">Crystal Fragments</span>
             </div>
         </div>
+        <!-- Total Wealth Indicator -->
+        <div class="sheet-wealth-total">
+            <span class="sheet-wealth-label">Encumbrance Value:</span>
+            <span name="attr_wealth_weight" class="sheet-wealth-value">Light</span>
+        </div>
+    </div>
 
+    <div class="sheet-grid">
         <!-- Weapons Section -->
-        <div class="sheet-section" style="grid-column: 1 / -1;">
-            <h3>Weapons</h3>
+        <div class="sheet-section">
+            <h3>Weapons & Arms</h3>
+            <div class="sheet-inventory-header">
+                <span class="sheet-slots-indicator">
+                    <span class="sheet-slots-label">Weapon Slots:</span>
+                    <span name="attr_weapon_slots_current">0</span> / <span name="attr_weapon_slots_max">3</span>
+                </span>
+            </div>
             <fieldset class="repeating_weapons">
-                <input type="text" name="attr_weapon_name" placeholder="Weapon Name">
-                <button type="roll" name="roll_attack" value="&{template:titd} {{name=@{character_name}}} {{title=Attacks with @{weapon_name}}} {{result=[[1d20+@{weapon_bonus}]]}} {{desc=@{weapon_desc}}}">
-                    Attack
-                </button>
-                <textarea name="attr_weapon_desc" placeholder="Damage/Effects..." style="grid-column: 1 / -1;"></textarea>
-                <input type="text" name="attr_weapon_bonus" placeholder="Attack Bonus (e.g. @{might})" style="grid-column: 1 / -1;">
+                <div class="sheet-weapon-item">
+                    <input type="text" name="attr_weapon_name" placeholder="Weapon Name" class="sheet-item-name">
+                    <div class="sheet-weapon-stats">
+                        <input type="text" name="attr_weapon_damage" placeholder="Damage (e.g., 1d6+2)" class="sheet-weapon-damage">
+                        <input type="number" name="attr_weapon_slots" value="1" min="0" max="3" title="Slots" class="sheet-slots-input">
+                    </div>
+                    <textarea name="attr_weapon_desc" placeholder="Special properties, range, etc..." class="sheet-item-desc"></textarea>
+                    <input type="text" name="attr_weapon_bonus" placeholder="Attack Bonus (e.g. @{might})" class="sheet-weapon-bonus">
+                    <button type="roll" name="roll_attack" value="&{template:titd} {{name=@{character_name}}} {{title=Attacks with @{weapon_name}}} {{result=[[1d20+@{weapon_bonus}]]}} {{desc=Damage: @{weapon_damage}. @{weapon_desc}}}" class="sheet-weapon-roll">
+                        Attack Roll
+                    </button>
+                </div>
             </fieldset>
         </div>
 
-        <!-- Inventory Section -->
-        <div class="sheet-section" style="grid-column: 1 / -1;">
-            <h3>Inventory</h3>
+        <!-- General Inventory Section -->
+        <div class="sheet-section">
+            <h3>Equipment & Gear</h3>
+            <div class="sheet-inventory-header">
+                <span class="sheet-slots-indicator">
+                    <span class="sheet-slots-label">Total Slots:</span>
+                    <span name="attr_inventory_current" class="sheet-slots-current">0</span> / <span name="attr_inventory_max" class="sheet-slots-max">10</span>
+                </span>
+                <span class="sheet-weight-status" name="attr_encumbrance_status">Unencumbered</span>
+            </div>
             <fieldset class="repeating_inventory">
-                <input type="text" name="attr_item_name" placeholder="Item Name">
-                <input type="number" name="attr_item_slots" value="1" min="0" title="Inventory Slots">
-                <textarea name="attr_item_desc" placeholder="Description..." style="grid-column: 1 / -1;"></textarea>
+                <div class="sheet-inventory-item">
+                    <input type="text" name="attr_item_name" placeholder="Item Name" class="sheet-item-name">
+                    <div class="sheet-item-controls">
+                        <input type="number" name="attr_item_quantity" value="1" min="0" title="Quantity" class="sheet-quantity-input">
+                        <span class="sheet-item-x">×</span>
+                        <input type="number" name="attr_item_slots" value="1" min="0" max="10" title="Slots per item" class="sheet-slots-input">
+                        <span class="sheet-slots-equals">=</span>
+                        <span name="attr_item_total_slots" class="sheet-total-slots">1</span>
+                    </div>
+                    <textarea name="attr_item_desc" placeholder="Description, properties, notes..." class="sheet-item-desc"></textarea>
+                </div>
             </fieldset>
+        </div>
+    </div>
+
+    <!-- Quick Items / Consumables -->
+    <div class="sheet-section">
+        <h3>Quick Items & Consumables</h3>
+        <div class="sheet-consumables-grid">
+            <div class="sheet-consumable-item">
+                <label>Torches</label>
+                <input type="number" name="attr_torches_count" value="0" min="0" class="sheet-consumable-input">
+            </div>
+            <div class="sheet-consumable-item">
+                <label>Rations</label>
+                <input type="number" name="attr_rations_count" value="0" min="0" class="sheet-consumable-input">
+            </div>
+            <div class="sheet-consumable-item">
+                <label>Bandages</label>
+                <input type="number" name="attr_bandages_count" value="0" min="0" class="sheet-consumable-input">
+            </div>
+            <div class="sheet-consumable-item">
+                <label>Oil Flasks</label>
+                <input type="number" name="attr_oil_count" value="0" min="0" class="sheet-consumable-input">
+            </div>
+            <div class="sheet-consumable-item">
+                <label>Rope (ft)</label>
+                <input type="number" name="attr_rope_count" value="0" min="0" step="10" class="sheet-consumable-input">
+            </div>
+            <div class="sheet-consumable-item">
+                <label>Arrows</label>
+                <input type="number" name="attr_arrows_count" value="0" min="0" class="sheet-consumable-input">
+            </div>
         </div>
     </div>
 </div>
 
 <!-- ABILITIES TAB CONTENT -->
 <div class="sheet-tab-content" data-tab="abilities">
-    <div class="sheet-grid">
-        <!-- Class Abilities Section -->
-        <div class="sheet-section">
+    <!-- Class Abilities Section -->
+    <div class="sheet-section sheet-abilities-section">
+        <div class="sheet-section-header">
             <h3>Class Abilities</h3>
+            <span class="sheet-ability-class-name" name="attr_class_name"></span>
+        </div>
+        <div class="sheet-abilities-container">
             <fieldset class="repeating_classabilities">
-                <input type="text" name="attr_classability_name" placeholder="Ability Name">
-                <textarea name="attr_classability_desc" placeholder="Description..."></textarea>
+                <div class="sheet-ability-card">
+                    <div class="sheet-ability-header">
+                        <input type="text" name="attr_classability_name" placeholder="Ability Name" class="sheet-ability-title">
+                        <select name="attr_classability_type" class="sheet-ability-type">
+                            <option value="passive">Passive</option>
+                            <option value="active">Active</option>
+                            <option value="reaction">Reaction</option>
+                        </select>
+                    </div>
+                    <textarea name="attr_classability_desc" placeholder="Description, mechanics, and requirements..." class="sheet-ability-desc"></textarea>
+                    <div class="sheet-ability-footer">
+                        <input type="text" name="attr_classability_cost" placeholder="Cost/Usage (e.g., 1/Day, 2 Resolve)" class="sheet-ability-cost">
+                        <button type="roll" name="roll_classability" value="&{template:titd} {{name=@{character_name}}} {{title=Uses @{classability_name}}} {{desc=@{classability_desc}}} {{result=Cost: @{classability_cost}}}" class="sheet-ability-use-btn">
+                            Use Ability
+                        </button>
+                    </div>
+                </div>
             </fieldset>
         </div>
+    </div>
 
+    <div class="sheet-grid">
         <!-- Traits Section -->
-        <div class="sheet-section">
-            <h3>Traits (Passive & Active)</h3>
-            <fieldset class="repeating_traits">
-                <input type="text" name="attr_trait_name" placeholder="Trait Name">
-                <textarea name="attr_trait_desc" placeholder="Description..."></textarea>
-            </fieldset>
+        <div class="sheet-section sheet-traits-section">
+            <div class="sheet-section-header">
+                <h3>Traits & Features</h3>
+                <span class="sheet-trait-count">Total: <span name="attr_trait_count">0</span></span>
+            </div>
+            <div class="sheet-traits-container">
+                <fieldset class="repeating_traits">
+                    <div class="sheet-trait-card">
+                        <div class="sheet-trait-header">
+                            <div class="sheet-trait-icon">◈</div>
+                            <input type="text" name="attr_trait_name" placeholder="Trait Name" class="sheet-trait-title">
+                        </div>
+                        <textarea name="attr_trait_desc" placeholder="Effects and mechanics..." class="sheet-trait-desc"></textarea>
+                        <div class="sheet-trait-tags">
+                            <select name="attr_trait_category" class="sheet-trait-category">
+                                <option value="racial">Racial</option>
+                                <option value="background">Background</option>
+                                <option value="acquired">Acquired</option>
+                                <option value="temporary">Temporary</option>
+                            </select>
+                            <input type="checkbox" name="attr_trait_active" value="1" class="sheet-trait-active">
+                            <span class="sheet-trait-active-label">Active</span>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
         </div>
 
         <!-- Spells & Miracles Section -->
-        <div class="sheet-section">
-            <h3>Spells & Miracles</h3>
-            <fieldset class="repeating_spellsmiracles">
-                <input type="text" name="attr_spellmiracle_name" placeholder="Spell/Miracle Name">
-                <textarea name="attr_spellmiracle_desc" placeholder="Description..."></textarea>
-            </fieldset>
+        <div class="sheet-section sheet-magic-section">
+            <div class="sheet-section-header">
+                <h3>Spells & Miracles</h3>
+                <div class="sheet-magic-pool">
+                    <label>Power Pool:</label>
+                    <input type="number" name="attr_power_current" value="0" min="0" class="sheet-power-current">
+                    <span>/</span>
+                    <input type="number" name="attr_power_max" value="0" min="0" class="sheet-power-max">
+                </div>
+            </div>
+            <div class="sheet-magic-container">
+                <fieldset class="repeating_spellsmiracles">
+                    <div class="sheet-spell-card">
+                        <div class="sheet-spell-header">
+                            <input type="text" name="attr_spell_name" placeholder="Spell/Miracle Name" class="sheet-spell-title">
+                            <select name="attr_spell_school" class="sheet-spell-school">
+                                <option value="none">-- School --</option>
+                                <option value="eldritch">Eldritch</option>
+                                <option value="arcane">Arcane</option>
+                                <option value="spirit">Spirit</option>
+                                <option value="crown">Crown</option>
+                                <option value="radiant">Radiant</option>
+                                <option value="fire">Fire</option>
+                                <option value="blood">Blood</option>
+                            </select>
+                        </div>
+                        <div class="sheet-spell-stats">
+                            <input type="text" name="attr_spell_range" placeholder="Range" class="sheet-spell-range">
+                            <input type="text" name="attr_spell_duration" placeholder="Duration" class="sheet-spell-duration">
+                            <input type="text" name="attr_spell_cost" placeholder="Cost" class="sheet-spell-cost">
+                        </div>
+                        <textarea name="attr_spell_desc" placeholder="Effect description..." class="sheet-spell-desc"></textarea>
+                        <div class="sheet-spell-footer">
+                            <input type="text" name="attr_spell_damage" placeholder="Damage/Healing (e.g., 2d6 fire)" class="sheet-spell-damage">
+                            <button type="roll" name="roll_spell" value="&{template:titd} {{name=@{character_name}}} {{title=Casts @{spell_name}}} {{desc=@{spell_desc}}} {{result=[[1d20+@{magick}]] vs Defense}} {{desc=Damage: @{spell_damage}. Cost: @{spell_cost}}}" class="sheet-spell-cast-btn">
+                                Cast
+                            </button>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
         </div>
     </div>
 </div>
