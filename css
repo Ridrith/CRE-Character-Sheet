@@ -1,139 +1,994 @@
-/* style.css */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-}
+/* Torches in the Dark - CSS v9.5 "The Sorcerer's Ledger" Redesign
+Fixed fonts for Roll20 compatibility + Strike Dots + Polish Improvements + Compact Layout */
 
+/* --- FONTS & CORE STYLES --- */
+/* Removed @import - using web-safe fonts for Roll20 compatibility */
 .charsheet {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    background-color: #e0e0e0; /* Light grey background */
-}
-
-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 2px solid #ccc;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
-}
-
-.logo {
-    max-height: 252px;
-}
-
-h1 {
-    margin: 0;
-    font-size: 24px;
-}
-
-.main-content section {
-    margin-bottom: 20px;
-}
-
-h2 {
-    font-size: 20px;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 5px;
-}
-
-.field-group {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.field {
-    flex: 1;
-    min-width: 200px;
-    margin-right: 20px;
-    margin-bottom: 10px;
-}
-
-.field label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.field input[type="text"],
-.field input[type="number"],
-.field select {
-    width: 100%;
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 10px; /* Rounded corners */
+    background-color: #0a0a0a;
+    color: #e0e0e0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px; /* Reduced from 16px */
+    line-height: 1.3; /* Tighter line spacing */
+    /* Dark Red Border — maintain original thickness */
+    box-shadow: inset 0 0 0 3px #3d0000; /* Slightly thinner */
+    /* Consistent internal padding */
+    padding: 8px; /* Reduced from 12px */
     box-sizing: border-box;
 }
 
-.field select {
-    font-size: 16px;
-    width: 100%;
+h3 {
+    font-family: Georgia, "Times New Roman", serif;
+    color: rgba(169, 169, 169, 0.9); /* Iron */
+    font-size: 1.4rem; /* Reduced from 2rem */
+    letter-spacing: 0.5px;
+    text-transform: capitalize;
+    text-align: center;
+    margin: 10px 0 15px 0; /* Tighter margins */
+    padding-bottom: 8px;
+    position: relative;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-button {
-    padding: 10px 20px;
-    background-color: #970000;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
+h3::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px; /* Shorter line */
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(169, 169, 169, 0.5), transparent);
+}
+
+h4 {
+    font-family: Georgia, "Times New Roman", serif;
+    color: rgba(169, 169, 169, 0.8);
+    font-size: 1.1rem; /* Reduced from 1.3rem */
+    letter-spacing: 0.3px;
+    text-transform: capitalize;
+    margin: 10px 0 8px 0; /* Tighter margins */
+    font-weight: 600;
+}
+
+/* --- TAB SYSTEM (CSS DRIVEN) --- */
+.sheet-tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid rgba(169, 169, 169, 0.15);
+    gap: 8px; /* Better spacing between tabs */
+    padding: 0 10px;
+    background: linear-gradient(180deg, rgba(26, 26, 26, 0.3) 0%, rgba(10, 10, 10, 0.5) 100%);
+}
+
+.sheet-tab-button {
+    font-family: Georgia, "Times New Roman", serif;
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.6) 0%, rgba(13, 13, 13, 0.8) 100%);
+    border: 1px solid rgba(169, 169, 169, 0.2);
+    border-bottom: none;
+    color: rgba(169, 169, 169, 0.5);
+    padding: 10px 20px 12px 20px; /* Better padding */
+    font-size: 0.95em;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
     cursor: pointer;
-    font-size: 16px;
+    transition: all 0.3s ease;
+    margin-bottom: -2px;
+    font-weight: 600;
+    position: relative;
+    border-radius: 8px 8px 0 0; /* Rounded top corners */
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+    min-width: 90px; /* Consistent minimum width */
 }
 
-button:hover {
-    background-color: #970000;
+/* Tab hover effect */
+.sheet-tab-button:hover {
+    color: rgba(169, 169, 169, 0.8);
+    background: linear-gradient(135deg, rgba(35, 35, 35, 0.6) 0%, rgba(20, 20, 20, 0.8) 100%);
+    border-color: rgba(169, 169, 169, 0.3);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4), 0 -1px 3px rgba(169, 169, 169, 0.1);
+    transform: translateY(-1px);
 }
 
-.skills-columns {
-    display: flex;
-    justify-content: space-between;
+/* Active tab styling */
+input[value="character"]:checked ~ .sheet-tabs .sheet-tab-button[data-tab="character"],
+input[value="inventory"]:checked ~ .sheet-tabs .sheet-tab-button[data-tab="inventory"],
+input[value="abilities"]:checked ~ .sheet-tabs .sheet-tab-button[data-tab="abilities"],
+input[value="dread"]:checked ~ .sheet-tabs .sheet-tab-button[data-tab="dread"] {
+    color: rgba(224, 224, 224, 1);
+    background: linear-gradient(135deg, rgba(61, 0, 0, 0.3) 0%, rgba(26, 26, 26, 0.6) 100%);
+    border-color: rgba(169, 169, 169, 0.4);
+    border-bottom: 2px solid #0a0a0a;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5), 0 0 8px rgba(169, 169, 169, 0.15);
+    transform: translateY(0);
+    z-index: 10;
 }
 
-.skills-column {
-    flex: 1;
-    margin: 0 10px;
+/* Add a subtle glow to active tab */
+input[value="character"]:checked ~ .sheet-tabs .sheet-tab-button[data-tab="character"]::after,
+input[value="inventory"]:checked ~ .sheet-tabs .sheet-tab-button[data-tab="inventory"]::after,
+input[value="abilities"]:checked ~ .sheet-tabs .sheet-tab-button[data-tab="abilities"]::after,
+input[value="dread"]:checked ~ .sheet-tabs .sheet-tab-button[data-tab="dread"]::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(169, 169, 169, 0.6), transparent);
+    opacity: 0.8;
 }
 
-.skills-column .field {
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-.skills-column .field label {
-    display: block;
-    margin-top: 5px;
-    text-align: center;
-}
-
-/* Dice Roll Buttons */
-.dice-rolls .dice-buttons {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
-}
-
-.dice-button {
-    width: 60px;
-    height: 60px;
+/* Add icon-like indicators for each tab */
+.sheet-tab-button[data-tab="character"]::before,
+.sheet-tab-button[data-tab="inventory"]::before,
+.sheet-tab-button[data-tab="abilities"]::before,
+.sheet-tab-button[data-tab="dread"]::before {
+    content: '';
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 6px;
     border-radius: 50%;
-    background-color: #cc0000;
-    color: #000;
+    background: currentColor;
+    opacity: 0.4;
+    transition: opacity 0.3s ease;
+    vertical-align: middle;
+}
+
+/* Active tab indicator brightens */
+input[value="character"]:checked ~ .sheet-tabs .sheet-tab-button[data-tab="character"]::before,
+input[value="inventory"]:checked ~ .sheet-tabs .sheet-tab-button[data-tab="inventory"]::before,
+input[value="abilities"]:checked ~ .sheet-tabs .sheet-tab-button[data-tab="abilities"]::before,
+input[value="dread"]:checked ~ .sheet-tabs .sheet-tab-button[data-tab="dread"]::before {
+    opacity: 0.8;
+    box-shadow: 0 0 4px currentColor;
+}
+
+/* Different colored indicators for each tab type */
+.sheet-tab-button[data-tab="character"]::before {
+    background: #50c878; /* Green for character */
+}
+
+.sheet-tab-button[data-tab="inventory"]::before {
+    background: #ffa500; /* Orange for inventory */
+}
+
+.sheet-tab-button[data-tab="abilities"]::before {
+    background: #87ceeb; /* Sky blue for abilities */
+}
+
+.sheet-tab-button[data-tab="dread"]::before {
+    background: #c70039; /* Red for dread */
+}
+
+/* Hide the default radio buttons */
+input[name="attr_tab"] {
+    display: none;
+}
+
+/* Tab content display control */
+.sheet-tab-content {
+    display: none;
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+input[value="character"]:checked ~ .sheet-tab-content[data-tab="character"],
+input[value="inventory"]:checked ~ .sheet-tab-content[data-tab="inventory"],
+input[value="abilities"]:checked ~ .sheet-tab-content[data-tab="abilities"],
+input[value="dread"]:checked ~ .sheet-tab-content[data-tab="dread"] {
+    display: block;
+}
+
+/* --- LAYOUT & SECTIONS --- */
+.sheet-container {
+    padding: 0;
+    max-width: 1000px; /* Slightly narrower */
+    margin: 0 auto;
+}
+
+.sheet-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Smaller minimum */
+    gap: 12px; /* Reduced gap */
+    align-items: start;
+}
+
+.sheet-section {
+    background: rgba(26, 26, 26, 0.5);
+    border: 1px solid rgba(169, 169, 169, 0.2);
+    border-radius: 4px; /* Smaller radius */
+    padding: 12px; /* Reduced padding */
+    margin-bottom: 12px; /* Tighter spacing */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* --- FORMS, INPUTS, BUTTONS --- */
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+    background-color: #0a0a0a;
+    border: 1px solid rgba(169, 169, 169, 0.3);
+    color: #e0e0e0;
+    border-radius: 3px;
+    padding: 6px 8px; /* Much smaller padding */
+    width: 100%;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.9em; /* Smaller text */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: rgba(169, 169, 169, 0.8);
+    box-shadow: 0 0 4px rgba(169, 169, 169, 0.3);
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: rgba(169, 169, 169, 0.5);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 50px; /* Reduced from 80px */
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* BUTTON FIX: ENHANCED SPECIFICITY FOR ROLL20 */
+.charsheet button[type="roll"],
+.charsheet .sheet-ability-plaque button[type="roll"],
+.charsheet .repitem button[type="roll"] {
+    background-image: none !important;
+    background-color: #1a1a1a !important;
+    color: rgba(169, 169, 169, 0.8) !important;
+    border: 1px solid rgba(169, 169, 169, 0.4) !important;
+    padding: 6px 10px !important; /* Smaller padding */
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    border-radius: 3px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    width: 100% !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    letter-spacing: 1px !important; /* Tighter spacing */
+    font-size: 0.75em !important; /* Smaller text */
+    text-shadow: none !important;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.5) !important;
+    margin: 0 !important;
+    position: relative !important;
+    box-sizing: border-box !important;
+}
+
+.charsheet button[type="roll"]:hover,
+.charsheet .sheet-ability-plaque button[type="roll"]:hover,
+.charsheet .repitem button[type="roll"]:hover {
+    background-color: #2a2a2a !important;
+    color: rgba(224, 224, 224, 1) !important;
+    border-color: rgba(169, 169, 169, 0.8) !important;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.3) !important;
+}
+
+/* --- SPECIFIC COMPONENTS --- */
+.sheet-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 10px; /* Reduced gap */
+    align-items: center;
+    margin-bottom: 15px; /* Reduced margin */
+}
+
+.sheet-header input[type="text"],
+.sheet-header select {
+    font-size: 1.1em; /* Smaller header inputs */
+    font-weight: 600;
+    padding: 5px 8px; /* Compact padding */
+}
+
+.sheet-core-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px; /* Tighter gap */
+    text-align: center;
+    margin-bottom: 15px; /* Reduced margin */
+}
+
+.sheet-stat-box {
+    background: rgba(26, 26, 26, 0.5);
+    border: 1px solid rgba(169, 169, 169, 0.2);
+    padding: 8px 6px; /* Much smaller padding */
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.2s ease;
+}
+
+.sheet-stat-box:hover {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.sheet-stat-box-label {
+    font-family: Arial, Helvetica, sans-serif;
+    text-transform: uppercase;
+    font-size: 0.65em; /* Smaller labels */
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    color: rgba(169, 169, 169, 0.8);
+    margin-bottom: 4px;
+}
+
+.sheet-stat-box-value {
+    font-size: 1.4em; /* Much smaller stat values */
+    font-weight: 700;
+    color: #e0e0e0;
+    line-height: 1.1;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.sheet-stat-box-value input {
+    font: inherit;
+    color: inherit;
+    background: transparent;
     border: none;
-    font-size: 16px;
+    padding: 0;
+    width: 40px; /* Smaller width */
+    display: inline-block;
+    box-shadow: none;
+    text-align: center;
+}
+
+/* FIXED STRIKES SYSTEM - Compact version */
+.sheet-strikes-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px; /* Tighter gap */
+}
+
+.sheet-strikes-dots {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 3px; /* Tighter spacing */
+    margin: 2px 0;
+}
+
+/* Strike checkbox styling - Smaller dots */
+.sheet-strike-dot {
+    width: 14px !important; /* Smaller dots */
+    height: 14px !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    border: 1.5px solid #666 !important;
+    border-radius: 50% !important;
+    background: transparent !important;
+    cursor: pointer !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: relative !important;
+    transition: all 0.2s ease !important;
+    box-shadow: inset 0 0 2px rgba(0,0,0,0.5) !important;
+}
+
+/* Checked state for strike dots */
+.sheet-strike-dot:checked {
+    background: #c70039 !important;
+    border-color: #c70039 !important;
+    box-shadow: inset 0 0 2px rgba(0,0,0,0.5), 0 0 5px rgba(199, 0, 57, 0.4) !important;
+}
+
+.sheet-strike-dot:hover {
+    border-color: #999 !important;
+    transform: scale(1.15) !important;
+}
+
+/* Hide strikes beyond max using attribute-based CSS */
+input[name="attr_strikes_max"][value="0"] ~ .sheet-core-stats .sheet-strikes-dots .sheet-strike-dot {
+    display: none !important;
+}
+
+input[name="attr_strikes_max"][value="1"] ~ .sheet-core-stats .sheet-strikes-dots .sheet-strike-dot:nth-child(n+2) {
+    display: none !important;
+}
+
+input[name="attr_strikes_max"][value="2"] ~ .sheet-core-stats .sheet-strikes-dots .sheet-strike-dot:nth-child(n+3) {
+    display: none !important;
+}
+
+input[name="attr_strikes_max"][value="3"] ~ .sheet-core-stats .sheet-strikes-dots .sheet-strike-dot:nth-child(n+4) {
+    display: none !important;
+}
+
+input[name="attr_strikes_max"][value="4"] ~ .sheet-core-stats .sheet-strikes-dots .sheet-strike-dot:nth-child(n+5) {
+    display: none !important;
+}
+
+input[name="attr_strikes_max"][value="5"] ~ .sheet-core-stats .sheet-strikes-dots .sheet-strike-dot:nth-child(n+6) {
+    display: none !important;
+}
+
+input[name="attr_strikes_max"][value="6"] ~ .sheet-core-stats .sheet-strikes-dots .sheet-strike-dot:nth-child(n+7) {
+    display: none !important;
+}
+
+input[name="attr_strikes_max"][value="7"] ~ .sheet-core-stats .sheet-strikes-dots .sheet-strike-dot:nth-child(n+8) {
+    display: none !important;
+}
+
+input[name="attr_strikes_max"][value="8"] ~ .sheet-core-stats .sheet-strikes-dots .sheet-strike-dot:nth-child(n+9) {
+    display: none !important;
+}
+
+input[name="attr_strikes_max"][value="9"] ~ .sheet-core-stats .sheet-strikes-dots .sheet-strike-dot:nth-child(n+10) {
+    display: none !important;
+}
+
+.sheet-strikes-remaining {
+    font-size: 0.7em; /* Smaller text */
+    color: rgba(169, 169, 169, 0.7);
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+}
+
+/* --- ABILITY SCORE PLAQUES --- */
+.sheet-abilities-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px; /* Tighter gap */
+}
+
+.sheet-ability-plaque {
+    border: 1px solid rgba(169, 169, 169, 0.2);
+    border-radius: 4px;
+    background: rgba(26, 26, 26, 0.5);
+    padding: 8px; /* Smaller padding */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 6px; /* Tighter gap */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.2s ease;
+}
+
+.sheet-ability-plaque:hover {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.sheet-ability-plaque .label {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1em; /* Smaller label */
+    text-transform: capitalize;
+    color: rgba(169, 169, 169, 0.8);
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.sheet-ability-plaque .score {
+    font-size: 1.8em; /* Smaller score */
+    font-weight: 700;
+    padding: 4px;
+    color: #e0e0e0;
+    border-radius: 3px;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-bottom: 2px;
+}
+
+.sheet-ability-plaque .score input {
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    border: none;
+    padding: 0;
+    width: 100%;
+    box-shadow: none;
+    text-align: center;
+}
+
+/* --- CUSTOM CLASS CONFIGURATION --- */
+.sheet-custom-class-section {
+    background: rgba(26, 26, 26, 0.7);
+    border: 2px solid rgba(169, 169, 169, 0.3);
+    display: none; /* Hidden by default */
+}
+
+/* Show custom class section when attr_show_custom_class is 1 */
+input[name="attr_show_custom_class"][value="1"] ~ .sheet-tab-content .sheet-section.sheet-custom-class-section {
+    display: block;
+}
+
+.repeating_custom_abilities .repitem {
+    grid-template-columns: 1fr;
+    gap: 8px;
+}
+
+/* --- REPEATING SECTIONS --- */
+.repcontainer .repitem {
+    border: 1px solid rgba(169, 169, 169, 0.2);
+    border-radius: 4px;
+    padding: 10px; /* Smaller padding */
+    margin-bottom: 10px; /* Tighter spacing */
+    background-color: rgba(26, 26, 26, 0.5);
+    display: grid;
+    gap: 8px; /* Tighter gap */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.2s ease;
+}
+
+.repcontainer .repitem:hover {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.repeating_weapons .repitem {
+    grid-template-columns: 3fr 1fr;
+    gap: 8px;
+}
+
+.repeating_inventory .repitem {
+    grid-template-columns: 3fr 1fr;
+    gap: 8px;
+}
+
+.repeating_abilities .repitem,
+.repeating_traits .repitem,
+.repeating_magic .repitem,
+.repeating_custom .repitem {
+    grid-template-columns: 1fr;
+    gap: 6px;
+}
+
+.repcontrol {
+    text-align: right;
+    margin-top: 10px;
+}
+
+/* --- FORM STYLING IMPROVEMENTS --- */
+label {
     display: flex;
     align-items: center;
-    justify-content: center;
-    cursor: pointer;
+    gap: 6px;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: rgba(169, 169, 169, 0.9);
+    font-size: 0.9em; /* Smaller labels */
 }
 
-.dice-button:hover {
-    background-color: #970000;
+hr {
+    border: none;
+    border-bottom: 1px solid rgba(169, 169, 169, 0.3);
+    margin: 10px 0; /* Tighter margins */
 }
+
+/* --- CURRENCY SYSTEM --- */
+.sheet-currency-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Smaller minimum */
+    gap: 10px; /* Tighter gap */
+    align-items: end;
+}
+
+.sheet-currency-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sheet-currency-item label {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 0.9em; /* Smaller */
+    font-weight: 600;
+    color: rgba(169, 169, 169, 0.9);
+    text-transform: capitalize;
+    margin-bottom: 0;
+    text-align: center;
+}
+
+.sheet-currency-item input[type="number"] {
+    text-align: center;
+    font-size: 1em; /* Smaller */
+    font-weight: 600;
+    padding: 5px 8px; /* Smaller padding */
+    background-color: rgba(26, 26, 26, 0.7);
+    border: 1px solid rgba(169, 169, 169, 0.3);
+    color: #ffa500;
+}
+
+/* --- DREAD SYSTEM --- */
+.sheet-dread-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Tighter gap */
+    align-items: center;
+}
+
+.sheet-dread-current {
+    text-align: center;
+}
+
+.sheet-dread-label {
+    font-family: Arial, Helvetica, sans-serif;
+    text-transform: uppercase;
+    font-size: 0.75em; /* Smaller */
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    color: rgba(169, 169, 169, 0.8);
+    margin-bottom: 6px;
+}
+
+.sheet-dread-value {
+    font-size: 2em; /* Smaller */
+    font-weight: 700;
+    color: #c70039;
+    line-height: 1.1;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.sheet-dread-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.sheet-dread-btn {
+    background-color: #1a1a1a !important;
+    color: rgba(169, 169, 169, 0.8) !important;
+    border: 1px solid rgba(169, 169, 169, 0.4) !important;
+    padding: 6px 12px !important; /* Smaller */
+    font-weight: 600 !important;
+    border-radius: 3px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 1em !important; /* Smaller */
+    width: 40px !important; /* Smaller */
+    height: 32px !important; /* Smaller */
+    background-image: none !important;
+}
+
+.sheet-dread-btn:hover {
+    background-color: #2a2a2a !important;
+    color: rgba(224, 224, 224, 1) !important;
+    border-color: rgba(169, 169, 169, 0.8) !important;
+}
+
+.sheet-dread-descriptions {
+    width: 100%;
+    min-height: 60px; /* Smaller */
+    text-align: left;
+}
+
+.sheet-dread-desc {
+    display: none;
+    padding: 8px; /* Smaller padding */
+    background: rgba(26, 26, 26, 0.3);
+    border-radius: 3px;
+    border-left: 3px solid #c70039;
+    font-size: 0.8em; /* Smaller text */
+    line-height: 1.3;
+}
+
+/* Show specific dread description based on dread_display value */
+input[name="attr_dread_display"][value="0"] ~ .sheet-tab-content .sheet-dread-descriptions .sheet-dread-desc[data-level="0"],
+input[name="attr_dread_display"][value="1"] ~ .sheet-tab-content .sheet-dread-descriptions .sheet-dread-desc[data-level="1"],
+input[name="attr_dread_display"][value="2"] ~ .sheet-tab-content .sheet-dread-descriptions .sheet-dread-desc[data-level="2"],
+input[name="attr_dread_display"][value="3"] ~ .sheet-tab-content .sheet-dread-descriptions .sheet-dread-desc[data-level="3"],
+input[name="attr_dread_display"][value="4"] ~ .sheet-tab-content .sheet-dread-descriptions .sheet-dread-desc[data-level="4"],
+input[name="attr_dread_display"][value="5"] ~ .sheet-tab-content .sheet-dread-descriptions .sheet-dread-desc[data-level="5"],
+input[name="attr_dread_display"][value="6"] ~ .sheet-tab-content .sheet-dread-descriptions .sheet-dread-desc[data-level="6"] {
+    display: block;
+}
+
+.sheet-dread-desc[data-level="0"] {
+    border-left-color: #50c878;
+}
+
+.sheet-dread-desc[data-level="1"],
+.sheet-dread-desc[data-level="2"] {
+    border-left-color: #ffa500;
+}
+
+.sheet-dread-desc[data-level="3"],
+.sheet-dread-desc[data-level="4"] {
+    border-left-color: #ff6347;
+}
+
+.sheet-dread-desc[data-level="5"],
+.sheet-dread-desc[data-level="6"] {
+    border-left-color: #c70039;
+}
+
+/* --- TORCH SYSTEM --- */
+.sheet-torch-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Tighter gap */
+    align-items: center;
+}
+
+.sheet-torch-current {
+    text-align: center;
+}
+
+.sheet-torch-label {
+    font-family: Arial, Helvetica, sans-serif;
+    text-transform: uppercase;
+    font-size: 0.75em; /* Smaller */
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    color: rgba(169, 169, 169, 0.8);
+    margin-bottom: 6px;
+}
+
+.sheet-torch-value {
+    font-size: 2em; /* Smaller */
+    font-weight: 700;
+    color: #ffa500;
+    line-height: 1.1;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.sheet-torch-status {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+}
+
+.sheet-torch-status-label {
+    font-weight: 600;
+    color: rgba(169, 169, 169, 0.8);
+    font-size: 0.9em;
+}
+
+.sheet-torch-status-value {
+    font-weight: 600;
+    color: #e0e0e0;
+    font-size: 0.9em;
+}
+
+.sheet-torch-controls {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.sheet-torch-btn {
+    background-color: #1a1a1a !important;
+    color: rgba(169, 169, 169, 0.8) !important;
+    border: 1px solid rgba(169, 169, 169, 0.4) !important;
+    padding: 5px 8px !important; /* Smaller */
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    border-radius: 3px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    letter-spacing: 0.3px !important;
+    font-size: 0.7em !important; /* Smaller */
+    background-image: none !important;
+}
+
+.sheet-torch-btn:hover {
+    background-color: #2a2a2a !important;
+    color: rgba(224, 224, 224, 1) !important;
+    border-color: rgba(169, 169, 169, 0.8) !important;
+}
+
+.sheet-torch-progression {
+    display: flex;
+    align-items: center;
+    gap: 6px; /* Tighter */
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 8px;
+    padding: 8px; /* Smaller */
+    background: rgba(26, 26, 26, 0.3);
+    border-radius: 3px;
+    font-size: 0.8em; /* Smaller */
+}
+
+.sheet-torch-stage {
+    font-family: monospace;
+    font-weight: normal;
+    color: rgba(169, 169, 169, 0.5);
+    transition: all 0.2s ease;
+}
+
+.sheet-torch-arrow {
+    color: rgba(169, 169, 169, 0.4);
+    font-size: 0.7em;
+}
+
+/* Highlight current torch die stage */
+input[name="attr_torch_die"][value="d12"] ~ .sheet-tab-content .sheet-torch-progression .sheet-torch-stage:nth-child(1),
+input[name="attr_torch_die"][value="d10"] ~ .sheet-tab-content .sheet-torch-progression .sheet-torch-stage:nth-child(3),
+input[name="attr_torch_die"][value="d8"] ~ .sheet-tab-content .sheet-torch-progression .sheet-torch-stage:nth-child(5),
+input[name="attr_torch_die"][value="d6"] ~ .sheet-tab-content .sheet-torch-progression .sheet-torch-stage:nth-child(7),
+input[name="attr_torch_die"][value="d4"] ~ .sheet-tab-content .sheet-torch-progression .sheet-torch-stage:nth-child(9),
+input[name="attr_torch_die"][value="out"] ~ .sheet-tab-content .sheet-torch-progression .sheet-torch-stage:nth-child(11) {
+    color: #ffa500;
+    font-weight: bold;
+    transform: scale(1.15);
+}
+
+/* --- ROLL TEMPLATE --- */
+.sheet-rolltemplate-titd table {
+    width: 100%;
+    background-color: #0a0a0a;
+    border: 2px solid rgba(169, 169, 169, 0.8);
+    color: #e0e0e0;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 6px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+    border-collapse: collapse;
+    border-radius: 3px;
+}
+
+.sheet-rolltemplate-titd .sheet-header {
+    background-color: transparent;
+    color: rgba(169, 169, 169, 1);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.2em; /* Smaller */
+    text-align: center;
+    padding: 8px;
+    border-bottom: 1px solid rgba(169, 169, 169, 0.4);
+    font-weight: 700;
+}
+
+.sheet-rolltemplate-titd .sheet-row {
+    padding: 6px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.sheet-rolltemplate-titd .sheet-label {
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.9em;
+}
+
+.sheet-rolltemplate-titd .sheet-result {
+    font-weight: bold;
+    font-size: 1em;
+    text-align: right;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.sheet-rolltemplate-titd .sheet-desc {
+    grid-column: 1 / -1;
+    font-size: 0.85em;
+    font-style: italic;
+    padding: 8px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.sheet-rolltemplate-titd .inlinerollresult {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(169, 169, 169, 0.3);
+    color: #e0e0e0;
+    font-weight: bold;
+    padding: 2px 4px;
+    border-radius: 2px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.sheet-rolltemplate-titd .inlinerollresult.fullcrit {
+    color: #50c878;
+    border-color: #50c878;
+    box-shadow: 0 0 3px rgba(80, 200, 120, 0.3);
+}
+
+.sheet-rolltemplate-titd .inlinerollresult.fullfail {
+    color: #c70039;
+    border-color: #c70039;
+    box-shadow: 0 0 3px rgba(199, 0, 57, 0.3);
+}
+
+/* --- ADDITIONAL ROLL20 COMPATIBILITY --- */
+/* Fix for Roll20's default button styling interference */
+.charsheet button {
+    background-image: none !important;
+    text-decoration: none !important;
+}
+
+.charsheet button[type="action"] {
+    background-image: none !important;
+    background-color: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    cursor: pointer !important;
+}
+
+/* Ensure proper checkbox styling for non-strike checkboxes */
+.charsheet input[type="checkbox"]:not(.sheet-strike-dot) {
+    width: auto !important;
+    height: auto !important;
+    box-shadow: none !important;
+    margin-right: 4px !important;
+    appearance: auto !important;
+    -webkit-appearance: checkbox !important;
+    -moz-appearance: checkbox !important;
+}
+
+/* Fix Roll20's span display for computed attributes */
+span[name^="attr_"] {
+    display: inline-block;
+}
+
+/* --- RESPONSIVE IMPROVEMENTS --- */
+@media (max-width: 768px) {
+    .sheet-core-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    
+    .sheet-abilities-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    
+    .sheet-header {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    
+    .sheet-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .sheet-currency-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+    
+    .sheet-strikes-dots {
+        max-width: 150px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sheet-core-stats {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    
+    .sheet-abilities-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    
+    .sheet-currency-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+    
+    .sheet-tabs {
+        flex-wrap: wrap;
+    }
+    
+    .sheet-tab-button {
+        padding: 6px 12px;
+        font-size: 0.95em;
+    }
+}
+
+/* --- END OF STYLESHEET --- */
