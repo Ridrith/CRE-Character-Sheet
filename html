@@ -1,254 +1,794 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title data-i18n="character_sheet">Character Sheet</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
-</head>
-<body>
-    <div class="charsheet">
-        <header>
-           <img src="https://i.ibb.co/k38ns0w/creswordalone.png" style="width:252px;height:92px;" alt="CRE Logo" class="logo">
-            <h1 data-i18n="character_sheet">Character Sheet</h1>
-        </header>
-        <div class="main-content">
-            <section class="char-info">
-                <h2 data-i18n="character_information">Character Information</h2>
-                <div class="field-group">
-                    <div class="field">
-                        <label for="char_name" data-i18n="character_name">Character Name</label>
-                        <input type="text" name="attr_char_name" value="">
-                    </div>
-                    <div class="field">
-                        <label for="race" data-i18n="race">Race</label>
-                        <input type="text" name="attr_race" value="">
-                    </div>
-                    <div class="field">
-                        <label for="class" data-i18n="class">Class</label>
-                        <input type="text" name="attr_class" value="">
-                    </div>
-                    <div class="field">
-                        <label for="player_name" data-i18n="player_name">Player Name</label>
-                        <input type="text" name="attr_player_name" value="">
-                    </div>
+<!-- Roll20 Character Sheet for Torches in the Dark -->
+<!-- Wrapper removed: Roll20 automatically wraps the sheet in a .charsheet div -->
+<div class="sheet-container">
+
+<!-- HIDDEN RADIO BUTTONS FOR CSS-DRIVEN TABS -->
+<input type="radio" name="attr_tab" value="character" checked="checked">
+<input type="radio" name="attr_tab" value="inventory">
+<input type="radio" name="attr_tab" value="abilities">
+<input type="radio" name="attr_tab" value="dread">
+
+<!-- HIDDEN INPUTS FOR SYSTEM CONTROLS -->
+<input type="hidden" name="attr_show_custom_class" value="0">
+<input type="hidden" name="attr_dread_display" value="0">
+<input type="hidden" name="attr_strikes_current" value="0">
+<input type="hidden" name="attr_strikes_max" value="0">
+
+<!-- HEADER SECTION -->
+<div class="sheet-header">
+    <input type="text" name="attr_character_name" placeholder="Character Name" style="font-size: 1.5em; font-weight: 600; text-align: center;">
+    <input type="text" name="attr_grim_sort_race" placeholder="Race">
+    <select name="attr_class_name">
+        <option value="None" selected>-- Select a Class --</option>
+        <option value="Custom">Custom Class</option>
+        <option value="Mercenary">Mercenary</option>
+        <option value="Knave">Knave</option>
+        <option value="Wytch Hunter">Wytch Hunter</option>
+        <option value="Prelate">Prelate</option>
+        <option value="Marauder">Marauder</option>
+        <option value="Hunter">Hunter</option>
+        <option value="Crusader">Crusader</option>
+        <option value="Pyromancer">Pyromancer</option>
+        <option value="Alchemist">Alchemist</option>
+        <option value="Wolfgroom">Wolfgroom</option>
+        <option value="Blackguard">Blackguard</option>
+        <option value="Skald">Skald</option>
+        <option value="Wytch">Wytch</option>
+    </select>
+</div>
+
+<!-- CORE STATS SECTION -->
+<div class="sheet-core-stats">
+    <div class="sheet-stat-box">
+        <div class="sheet-stat-box-label">Strikes</div>
+        <div class="sheet-stat-box-value">
+            <div class="sheet-strikes-container">
+                <!-- Strike checkboxes that work with Roll20 -->
+                <div class="sheet-strikes-dots">
+                    <input type="checkbox" name="attr_strike_1" class="sheet-strike-dot" value="1" title="Strike 1">
+                    <input type="checkbox" name="attr_strike_2" class="sheet-strike-dot" value="1" title="Strike 2">
+                    <input type="checkbox" name="attr_strike_3" class="sheet-strike-dot" value="1" title="Strike 3">
+                    <input type="checkbox" name="attr_strike_4" class="sheet-strike-dot" value="1" title="Strike 4">
+                    <input type="checkbox" name="attr_strike_5" class="sheet-strike-dot" value="1" title="Strike 5">
+                    <input type="checkbox" name="attr_strike_6" class="sheet-strike-dot" value="1" title="Strike 6">
+                    <input type="checkbox" name="attr_strike_7" class="sheet-strike-dot" value="1" title="Strike 7">
+                    <input type="checkbox" name="attr_strike_8" class="sheet-strike-dot" value="1" title="Strike 8">
+                    <input type="checkbox" name="attr_strike_9" class="sheet-strike-dot" value="1" title="Strike 9">
+                    <input type="checkbox" name="attr_strike_10" class="sheet-strike-dot" value="1" title="Strike 10">
                 </div>
-            </section>
-            <section class="attributes">
-                <h2 data-i18n="attributes">Attributes</h2>
-                <div class="field-group">
-                    <div class="field">
-                        <label for="armor_type" data-i18n="armor_type">Armor Type</label>
-                        <select name="attr_armor_type">
-                            <option value="unarmored" data-i18n="unarmored">Unarmored</option>
-                            <option value="light" data-i18n="light">Light</option>
-                            <option value="medium" data-i18n="medium">Medium</option>
-                            <option value="heavy" data-i18n="heavy">Heavy</option>
-                            <option value="very_heavy" data-i18n="very_heavy">Very Heavy</option>
-                            <option value="custom" data-i18n="custom">Custom</option>
-                        </select>
-                    </div>
+                
+                <!-- Remaining health display -->
+                <div class="sheet-strikes-remaining">
+                    <span name="attr_strikes_remaining" style="font-size: 0.9em; color: rgba(169, 169, 169, 0.8);"></span>
                 </div>
-                <div class="field-group">
-                    <div class="field">
-                        <label for="damage_reduction" data-i18n="damage_reduction">Damage Reduction (DR)</label>
-                        <input type="number" name="attr_damage_reduction" value="">
-                    </div>
-                    <div class="field">
-                        <label for="damage_modifier" data-i18n="damage_modifier">Damage Modifier</label>
-                        <input type="number" name="attr_damage_modifier" value="">
-                    </div>
-                    <div class="field">
-                        <label for="hp" data-i18n="hp">HP</label>
-                        <input type="number" name="attr_hp" value="">
-                    </div>
-                    <div class="field">
-                        <label for="armor_traits" data-i18n="armor_traits">Armor Trait</label>
-                        <input type="text" name="attr_armor_traits" value="">
-                    </div>
-                                        <div class="field">
-                        <label for="armor_traits" data-i18n="weapon_traits">Weapon Trait</label>
-                        <input type="text" name="attr_weapon_traits" value="">
-                    </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="sheet-stat-box">
+        <div class="sheet-stat-box-label">Defense</div>
+        <div class="sheet-stat-box-value">
+            <span name="attr_defense">5</span>
+        </div>
+    </div>
+    
+    <div class="sheet-stat-box">
+        <div class="sheet-stat-box-label">Inventory</div>
+        <div class="sheet-stat-box-value">
+            <span name="attr_inventory_current">0</span>/<span name="attr_inventory_max">10</span>
+            <div style="font-size: 0.8em; color: rgba(169, 169, 169, 0.7);">
+                Armor: <span name="attr_armor_slots_used">0</span> slots
+            </div>
+        </div>
+    </div>
+    
+    <div class="sheet-stat-box">
+        <div class="sheet-stat-box-label">DR Chance</div>
+        <div class="sheet-stat-box-value">
+            <span name="attr_dr_chance_display">0/6</span>
+        </div>
+    </div>
+</div>
+
+<!-- TAB NAVIGATION -->
+<nav class="sheet-tabs">
+    <button type="action" name="act_tab_character" class="sheet-tab-button" data-tab="character">Character</button>
+    <button type="action" name="act_tab_inventory" class="sheet-tab-button" data-tab="inventory">Inventory</button>
+    <button type="action" name="act_tab_abilities" class="sheet-tab-button" data-tab="abilities">Abilities</button>
+    <button type="action" name="act_tab_dread" class="sheet-tab-button" data-tab="dread">Dread</button>
+</nav>
+
+<!-- CHARACTER TAB CONTENT -->
+<div class="sheet-tab-content" data-tab="character">
+    <!-- Ability Scores Section -->
+    <div class="sheet-section">
+        <h3>Ability Scores</h3>
+        <div class="sheet-abilities-grid">
+            <div class="sheet-ability-plaque">
+                <div class="label">Might</div>
+                <div class="score">
+                    <input type="number" name="attr_might" value="0">
                 </div>
-            </section>
-            <section class="skills">
-                <h2 data-i18n="skills">Skills</h2>
-                <div class="field">
-                    <label for="skill_points" data-i18n="skill_points">Skill Points: <span id="skill_points_display">4</span></label>
-                    <input type="number" name="attr_skill_points" value="4" readonly hidden>
+                <button type="roll" name="roll_might" value="&{template:titd} {{name=@{character_name}}} {{title=Might Check}} {{result=[[1d20+@{might}]]}}">Roll</button>
+            </div>
+            
+            <div class="sheet-ability-plaque">
+                <div class="label">Finesse</div>
+                <div class="score">
+                    <input type="number" name="attr_finesse" value="0">
                 </div>
-                <div class="skills-columns">
-                    <div class="skills-column">
-                        <div class="field">
-                            <input type="number" name="attr_surge" value="0" class="skill-input">
-                            <label for="surge" data-i18n="surge">Surge</label>
-                        </div>
-                        <div class="field">
-                            <input type="number" name="attr_block" value="0" class="skill-input">
-                            <label for="block" data-i18n="block">Block</label>
-                        </div>
-                        <div class="field">
-                            <input type="number" name="attr_heal" value="1" class="skill-input">
-                            <label for="heal" data-i18n="heal">Heal</label>
-                        </div>
-                    </div>
-                    <div class="skills-column">
-                        <div class="field">
-                            <input type="number" name="attr_cleave" value="0" class="skill-input">
-                            <label for="cleave" data-i18n="cleave">Cleave</label>
-                        </div>
-                        <div class="field">
-                            <input type="number" name="attr_taunt" value="0" class="skill-input">
-                            <label for="taunt" data-i18n="taunt">Taunt</label>
-                        </div>
-                        <div class="field">
-                            <input type="number" name="attr_focus" value="0" class="skill-input">
-                            <label for="focus" data-i18n="focus">Focus</label>
-                        </div>
-                    </div>
+                <button type="roll" name="roll_finesse" value="&{template:titd} {{name=@{character_name}}} {{title=Finesse Check}} {{result=[[1d20+@{finesse}]]}}">Roll</button>
+            </div>
+            
+            <div class="sheet-ability-plaque">
+                <div class="label">Endurance</div>
+                <div class="score">
+                    <input type="number" name="attr_endurance" value="0">
                 </div>
-            </section>
-            <section class="dice-rolls">
-                <h2 data-i18n="dice_rolls">Dice Rolls</h2>
-                <div class="dice-buttons">
-                    <button type="roll" value="/roll 1d20" name="roll_D20" class="dice-button" data-dice="d20">D20</button>
-                    <button type="roll" value="/roll 1d10" name="roll_D10" class="dice-button" data-dice="d10">D10</button>
-                    <button type="roll" value="/roll 1d6" name="roll_D6" class="dice-button" data-dice="d6">D6</button>
-                    <button type="roll" value="/roll 1d4" name="roll_D4" class="dice-button" data-dice="d4">D4</button>
+                <button type="roll" name="roll_endurance" value="&{template:titd} {{name=@{character_name}}} {{title=Endurance Check}} {{result=[[1d20+@{endurance}]]}}">Roll</button>
+            </div>
+            
+            <div class="sheet-ability-plaque">
+                <div class="label">Insight</div>
+                <div class="score">
+                    <input type="number" name="attr_insight" value="0">
                 </div>
-            </section>
-            <section class="advanced-skills">
-                <h2 data-i18n="advanced_skills">Advanced Skills</h2>
-                <div id="advanced-skills-list">
-                    <div class="field">
-                        <label for="adv_skill_1" data-i18n="advanced_skill_1">Advanced Skill 1</label>
-                        <input type="text" name="attr_adv_skill_1" value="">
-                    </div>
-                    <div class="field">
-                        <label data-i18n="advanced_skill_2">Advanced Skill 2</label>
-                        <input type="text" name="attr_adv_skill_2" value="">
-                    </div>
-                    <div class="field">
-                        <label data-i18n="advanced_skill_3">Advanced Skill 3</label>
-                        <input type="text" name="attr_adv_skill_3" value="">
-                    </div>
-                    <div class="field">
-                        <label data-i18n="advanced_skill_4">Advanced Skill 4</label>
-                        <input type="text" name="attr_adv_skill_4" value="">
-                    </div>
-                    <div class="field">
-                        <label data-i18n="advanced_skill_5">Advanced Skill 5</label>
-                        <input type="text" name="attr_adv_skill_5" value="">
-                    </div>
+                <button type="roll" name="roll_insight" value="&{template:titd} {{name=@{character_name}}} {{title=Insight Check}} {{result=[[1d20+@{insight}]]}}">Roll</button>
+            </div>
+            
+            <div class="sheet-ability-plaque">
+                <div class="label">Resolve</div>
+                <div class="score">
+                    <input type="number" name="attr_resolve" value="0">
                 </div>
-            </section>
-            <section class="elite-skills">
-                <h2 data-i18n="elite_skills">Elite Skills</h2>
-                <div id="elite-skills-list">
-                    <div class="field">
-                        <label for="elite_skill_1" data-i18n="elite_skill_1">Elite Skill 1</label>
-                        <input type="text" name="attr_elite_skill_1" value="">
-                    </div>
-                    <div class="field">
-                        <label data-i18n="elite_skill_2">Elite Skill 2</label>
-                        <input type="text" name="attr_elite_skill_2" value="">
-                    </div>
-                    <div class="field">
-                        <label data-i18n="elite_skill_3">Elite Skill 3</label>
-                        <input type="text" name="attr_elite_skill_3" value="">
-                    </div>
+                <button type="roll" name="roll_resolve" value="&{template:titd} {{name=@{character_name}}} {{title=Resolve Check}} {{result=[[1d20+@{resolve}]]}}">Roll</button>
+            </div>
+            
+            <div class="sheet-ability-plaque">
+                <div class="label">Presence</div>
+                <div class="score">
+                    <input type="number" name="attr_presence" value="0">
                 </div>
-            </section>
+                <button type="roll" name="roll_presence" value="&{template:titd} {{name=@{character_name}}} {{title=Presence Check}} {{result=[[1d20+@{presence}]]}}">Roll</button>
+            </div>
+            
+            <div class="sheet-ability-plaque">
+                <div class="label">Faith</div>
+                <div class="score">
+                    <input type="number" name="attr_faith" value="0">
+                </div>
+                <button type="roll" name="roll_faith" value="&{template:titd} {{name=@{character_name}}} {{title=Faith Check}} {{result=[[1d20+@{faith}]]}}">Roll</button>
+            </div>
+            
+            <div class="sheet-ability-plaque">
+                <div class="label">Magick</div>
+                <div class="score">
+                    <input type="number" name="attr_magick" value="0">
+                </div>
+                <button type="roll" name="roll_magick" value="&{template:titd} {{name=@{character_name}}} {{title=Magick Check}} {{result=[[1d20+@{magick}]]}}">Roll</button>
+            </div>
+            
+            <div class="sheet-ability-plaque">
+                <div class="label">Luck</div>
+                <div class="score">
+                    <input type="number" name="attr_luck" value="0">
+                </div>
+                <button type="roll" name="roll_luck" value="&{template:titd} {{name=@{character_name}}} {{title=Luck Check}} {{result=[[1d20+@{luck}]]}}">Roll</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Class Configuration (only visible when Custom class is selected) -->
+    <div class="sheet-section sheet-custom-class-section">
+        <h3>Custom Class Configuration</h3>
+        <div class="sheet-grid">
+            <div>
+                <label for="attr_custom_class_name">Class Name:</label>
+                <input type="text" name="attr_custom_class_name" id="attr_custom_class_name" placeholder="Enter custom class name">
+            </div>
+            <div>
+                <label for="attr_custom_strikes_max">Max Strikes:</label>
+                <input type="number" name="attr_custom_strikes_max" id="attr_custom_strikes_max" value="5" min="1" max="10">
+            </div>
+        </div>
+        
+        <h4 style="margin-top: 20px; margin-bottom: 10px; color: rgba(169, 169, 169, 0.8);">Custom Abilities</h4>
+        <fieldset class="repeating_customabilities">
+            <input type="text" name="attr_customability_name" placeholder="Ability Name">
+            <textarea name="attr_customability_desc" placeholder="Description..."></textarea>
+        </fieldset>
+    </div>
+
+    <!-- Character Details Grid -->
+    <div class="sheet-grid">
+        <!-- Combat Gear Section -->
+        <div class="sheet-section">
+            <h3>Combat Gear</h3>
+            
+            <label for="attr_armor_type">Armor:</label>
+            <select name="attr_armor_type" id="attr_armor_type">
+                <option value="0">None</option>
+                <optgroup label="Light Armor">
+                    <option value="padded">Padded Armor</option>
+                    <option value="leather">Leather Armor</option>
+                    <option value="studded">Studded Leather</option>
+                </optgroup>
+                <optgroup label="Medium Armor">
+                    <option value="chain_shirt">Chain Shirt</option>
+                    <option value="scale_mail">Scale Mail</option>
+                    <option value="chain_mail">Chain Mail</option>
+                </optgroup>
+                <optgroup label="Heavy Armor">
+                    <option value="banded_mail">Banded Mail</option>
+                    <option value="plate_mail">Plate Mail</option>
+                    <option value="full_plate">Full Plate</option>
+                </optgroup>
+            </select>
+            
+            <label for="attr_shield_type">Shield:</label>
+            <select name="attr_shield_type" id="attr_shield_type">
+                <option value="0">None</option>
+                <option value="buckler">Buckler</option>
+                <option value="round">Round Shield</option>
+                <option value="tower">Tower Shield</option>
+            </select>
+            
+            <label>
+                <input type="checkbox" name="attr_helmet" value="1" style="box-shadow:none; width:auto;">
+                Helmet (+1 DEF)
+            </label>
+            
+            <hr>
+            
+            <button type="roll" name="roll_dr" value="&{template:titd} {{name=@{character_name}}} {{title=Damage Reduction}} {{result=[[1d6cs<@{dr_chance}cf>@{dr_chance}]]}} {{desc=Needs a [[@{dr_chance}]] or less to succeed.}}">
+                Roll for Damage Reduction
+            </button>
         </div>
 
-        <script type="text/worker">
-            on("change:armor_type sheet:opened", function() {
-                getAttrs(["armor_type"], function(values) {
-                    let armorType = values.armor_type;
-                    let dr, dmgMod, hp;
-
-                    switch (armorType) {
-                        case 'unarmored':
-                            dr = 2;
-                            dmgMod = 4;
-                            hp = 8;
-                            break;
-                        case 'light':
-                            dr = 3;
-                            dmgMod = 2;
-                            hp = 10;
-                            break;
-                        case 'medium':
-                            dr = 4;
-                            dmgMod = 1;
-                            hp = 12;
-                            break;
-                        case 'heavy':
-                            dr = 5;
-                            dmgMod = 0;
-                            hp = 14;
-                            break;
-                        case 'very_heavy':
-                            dr = 6;
-                            dmgMod = -1;
-                            hp = 16;
-                            break;
-                        case 'custom':
-                            dr = 0;
-                            dmgMod = 0;
-                            hp = 0;
-                            break;
-                        default:
-                            dr = 0;
-                            dmgMod = 0;
-                            hp = 0;
-                            break;
-                    }
-
-                    setAttrs({
-                        damage_reduction: dr,
-                        damage_modifier: dmgMod,
-                        hp: hp
-                    });
-                });
-            });
-        </script>
-
-        <script type="text/javascript">
-            document.addEventListener('DOMContentLoaded', function() {
-                document.querySelector('select[name="attr_armor_type"]').addEventListener('change', function() {
-                    let customArmorFields = document.querySelectorAll('.custom-armor');
-                    if (this.value === 'custom') {
-                        customArmorFields.forEach(field => field.style.display = 'block');
-                    } else {
-                        customArmorFields.forEach(field => field.style.display = 'none');
-                    }
-                });
-
-                // Update skill points dynamically
-                const skillInputs = document.querySelectorAll('.skill-input');
-                const skillPointsDisplay = document.getElementById('skill_points_display');
-                let skillPoints = 4;
-
-                function updateSkillPoints() {
-                    let totalPointsUsed = 0;
-                    skillInputs.forEach(input => {
-                        totalPointsUsed += parseInt(input.value) || 0;
-                    });
-                    skillPoints = 4 - totalPointsUsed;
-                    skillPointsDisplay.textContent = skillPoints;
-                }
-
-                skillInputs.forEach(input => {
-                    input.addEventListener('input', function() {
-                        updateSkillPoints();
-                    });
-                });
-
-                // Trigger initial check
-                document.querySelector('select[name="attr_armor_type"]').dispatchEvent(new Event('change'));
-                updateSkillPoints(); // Initialize skill points on page load
-            });
-        </script>
+        <!-- Notes & Conditions Section -->
+        <div class="sheet-section">
+            <h3>Notes & Conditions</h3>
+            <textarea name="attr_notes" placeholder="List any active conditions, background notes, etc..."></textarea>
+        </div>
     </div>
-</body>
-</html>
+</div>
+
+<!-- INVENTORY TAB CONTENT -->
+<div class="sheet-tab-content" data-tab="inventory">
+    <div class="sheet-grid">
+        <!-- Currency Section -->
+        <div class="sheet-section" style="grid-column: 1 / -1;">
+            <h3>Currency</h3>
+            <div class="sheet-currency-grid">
+                <div class="sheet-currency-item">
+                    <label for="attr_currency_golm">Golm</label>
+                    <input type="number" name="attr_currency_golm" id="attr_currency_golm" value="0" min="0">
+                </div>
+                <div class="sheet-currency-item">
+                    <label for="attr_currency_mark">Mark</label>
+                    <input type="number" name="attr_currency_mark" id="attr_currency_mark" value="0" min="0">
+                </div>
+                <div class="sheet-currency-item">
+                    <label for="attr_currency_castar">Castar</label>
+                    <input type="number" name="attr_currency_castar" id="attr_currency_castar" value="0" min="0">
+                </div>
+                <div class="sheet-currency-item">
+                    <label for="attr_currency_luminary">Luminary</label>
+                    <input type="number" name="attr_currency_luminary" id="attr_currency_luminary" value="0" min="0">
+                </div>
+            </div>
+        </div>
+
+        <!-- Weapons Section -->
+        <div class="sheet-section" style="grid-column: 1 / -1;">
+            <h3>Weapons</h3>
+            <fieldset class="repeating_weapons">
+                <input type="text" name="attr_weapon_name" placeholder="Weapon Name">
+                <button type="roll" name="roll_attack" value="&{template:titd} {{name=@{character_name}}} {{title=Attacks with @{weapon_name}}} {{result=[[1d20+@{weapon_bonus}]]}} {{desc=@{weapon_desc}}}">
+                    Attack
+                </button>
+                <textarea name="attr_weapon_desc" placeholder="Damage/Effects..." style="grid-column: 1 / -1;"></textarea>
+                <input type="text" name="attr_weapon_bonus" placeholder="Attack Bonus (e.g. @{might})" style="grid-column: 1 / -1;">
+            </fieldset>
+        </div>
+
+        <!-- Inventory Section -->
+        <div class="sheet-section" style="grid-column: 1 / -1;">
+            <h3>Inventory</h3>
+            <fieldset class="repeating_inventory">
+                <input type="text" name="attr_item_name" placeholder="Item Name">
+                <input type="number" name="attr_item_slots" value="1" min="0" title="Inventory Slots">
+                <textarea name="attr_item_desc" placeholder="Description..." style="grid-column: 1 / -1;"></textarea>
+            </fieldset>
+        </div>
+    </div>
+</div>
+
+<!-- ABILITIES TAB CONTENT -->
+<div class="sheet-tab-content" data-tab="abilities">
+    <div class="sheet-grid">
+        <!-- Class Abilities Section -->
+        <div class="sheet-section">
+            <h3>Class Abilities</h3>
+            <fieldset class="repeating_classabilities">
+                <input type="text" name="attr_classability_name" placeholder="Ability Name">
+                <textarea name="attr_classability_desc" placeholder="Description..."></textarea>
+            </fieldset>
+        </div>
+
+        <!-- Traits Section -->
+        <div class="sheet-section">
+            <h3>Traits (Passive & Active)</h3>
+            <fieldset class="repeating_traits">
+                <input type="text" name="attr_trait_name" placeholder="Trait Name">
+                <textarea name="attr_trait_desc" placeholder="Description..."></textarea>
+            </fieldset>
+        </div>
+
+        <!-- Spells & Miracles Section -->
+        <div class="sheet-section">
+            <h3>Spells & Miracles</h3>
+            <fieldset class="repeating_spellsmiracles">
+                <input type="text" name="attr_spellmiracle_name" placeholder="Spell/Miracle Name">
+                <textarea name="attr_spellmiracle_desc" placeholder="Description..."></textarea>
+            </fieldset>
+        </div>
+    </div>
+</div>
+
+<!-- DREAD TAB CONTENT -->
+<div class="sheet-tab-content" data-tab="dread">
+    <div class="sheet-grid">
+        <!-- Dread Level Section -->
+        <div class="sheet-section">
+            <h3>Dread Level</h3>
+            <div class="sheet-dread-container">
+                <!-- Hidden inputs for dread system -->
+                <input type="hidden" name="attr_dread_level" value="0">
+                
+                <!-- Dread level display -->
+                <div class="sheet-dread-current">
+                    <div class="sheet-dread-label">Current Dread Level</div>
+                    <div class="sheet-dread-value">
+                        <span name="attr_dread_display">0</span>/6
+                    </div>
+                </div>
+                
+                <!-- Dread level buttons -->
+                <div class="sheet-dread-buttons">
+                    <button type="action" name="act_dread_decrease" class="sheet-dread-btn">-</button>
+                    <button type="action" name="act_dread_increase" class="sheet-dread-btn">+</button>
+                </div>
+                
+                <!-- Dread level descriptions -->
+                <div class="sheet-dread-descriptions">
+                    <div class="sheet-dread-desc" data-level="0">
+                        <strong>Level 0:</strong> Light holds back the dread.
+                    </div>
+                    <div class="sheet-dread-desc" data-level="1">
+                        <strong>Level 1:</strong> Unease. All Resolve saves are at disadvantage until light returns.
+                    </div>
+                    <div class="sheet-dread-desc" data-level="2">
+                        <strong>Level 2:</strong> Disorientation. Insight and Finesse checks at disadvantage. You drift unless you declare physical contact.
+                    </div>
+                    <div class="sheet-dread-desc" data-level="3">
+                        <strong>Level 3:</strong> Shadows lengthen. Each character makes a Resolve save DC 10 or suffers Morale Broken.
+                    </div>
+                    <div class="sheet-dread-desc" data-level="4">
+                        <strong>Level 4:</strong> Grasping dark. One random character is attacked by unseen claws. Fang and Claw damage. Ignores DR.
+                    </div>
+                    <div class="sheet-dread-desc" data-level="5">
+                        <strong>Level 5:</strong> Dragged screaming. One random character makes an Endurance save DC 14 or is pulled into black and separated.
+                    </div>
+                    <div class="sheet-dread-desc" data-level="6">
+                        <strong>Level 6:</strong> The Hunt. Each round, 1d4 shadow beasts attack until light is restored. Their strikes ignore DR and cause Bleeding Wound.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Torchlight Section -->
+        <div class="sheet-section">
+            <h3>Torchlight</h3>
+            <div class="sheet-torch-container">
+                <!-- Hidden inputs for torch system -->
+                <input type="hidden" name="attr_torch_die" value="d12">
+                <input type="hidden" name="attr_torch_active" value="1">
+                
+                <!-- Current torch die display -->
+                <div class="sheet-torch-current">
+                    <div class="sheet-torch-label">Usage Die</div>
+                    <div class="sheet-torch-value">
+                        <span name="attr_torch_die">d12</span>
+                    </div>
+                </div>
+                
+                <!-- Torch status -->
+                <div class="sheet-torch-status">
+                    <div class="sheet-torch-status-label">Status:</div>
+                    <div class="sheet-torch-status-value">
+                        <span name="attr_torch_status">Burning Bright</span>
+                    </div>
+                </div>
+                
+                <!-- Torch roll button -->
+                <button type="roll" name="roll_torch_usage" value="&{template:titd} {{name=@{character_name}}} {{title=Torch Usage}} {{result=[[1@{torch_die}]]}} {{desc=Roll 1-2 to degrade torch die.}}">
+                    Roll Torch Usage
+                </button>
+                
+                <!-- Manual torch controls -->
+                <div class="sheet-torch-controls">
+                    <button type="action" name="act_torch_degrade" class="sheet-torch-btn">Degrade Torch</button>
+                    <button type="action" name="act_torch_relight" class="sheet-torch-btn">Light New Torch</button>
+                </div>
+                
+                <!-- Torch progression display -->
+                <div class="sheet-torch-progression">
+                    <div class="sheet-torch-stage">d12</div>
+                    <div class="sheet-torch-arrow">→</div>
+                    <div class="sheet-torch-stage">d10</div>
+                    <div class="sheet-torch-arrow">→</div>
+                    <div class="sheet-torch-stage">d8</div>
+                    <div class="sheet-torch-arrow">→</div>
+                    <div class="sheet-torch-stage">d6</div>
+                    <div class="sheet-torch-arrow">→</div>
+                    <div class="sheet-torch-stage">d4</div>
+                    <div class="sheet-torch-arrow">→</div>
+                    <div class="sheet-torch-stage">Out</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div><!-- End .sheet-container -->
+
+<!-- ROLL TEMPLATE -->
+<rolltemplate class="sheet-rolltemplate-titd">
+    <table>
+        <tbody>
+            <tr class="sheet-header">
+                <td colspan="2">{{name}} - {{title}}</td>
+            </tr>
+            {{#result}}
+            <tr class="sheet-row">
+                <td class="sheet-label">Result:</td>
+                <td class="sheet-result">{{result}}</td>
+            </tr>
+            {{/result}}
+            {{#desc}}
+            <tr class="sheet-row">
+                <td colspan="2" class="sheet-desc">{{desc}}</td>
+            </tr>
+            {{/desc}}
+        </tbody>
+    </table>
+</rolltemplate>
+
+<!-- SHEET WORKER SCRIPT -->
+<script type="text/worker">
+// CLASS DATA - Simplified to only contain strikes
+const classData = {
+    "Mercenary": { strikes: 6 },
+    "Knave": { strikes: 5 },
+    "Wytch Hunter": { strikes: 5 },
+    "Prelate": { strikes: 4 },
+    "Marauder": { strikes: 6 },
+    "Hunter": { strikes: 5 },
+    "Crusader": { strikes: 6 },
+    "Pyromancer": { strikes: 4 },
+    "Alchemist": { strikes: 4 },
+    "Wolfgroom": { strikes: 5 },
+    "Blackguard": { strikes: 6 },
+    "Skald": { strikes: 5 },
+    "Wytch": { strikes: 3 },
+    "Custom": { strikes: 5 }
+};
+
+// ARMOR DATA
+const armorData = {
+    // Backward compatibility with old system
+    "0": { def: 0, dr: 0, slots: 0, cost: 0, name: "None" },
+    "1": { def: 4, dr: 1, slots: 1, cost: 12, name: "Light Armor" },
+    "2": { def: 2, dr: 2, slots: 2, cost: 35, name: "Medium Armor" },
+    "3": { def: -2, dr: 3, slots: 3, cost: 100, name: "Heavy Armor" },
+    // Light Armor
+    "padded": { def: 4, dr: 1, slots: 1, cost: 8, name: "Padded Armor" },
+    "leather": { def: 5, dr: 1, slots: 1, cost: 12, name: "Leather Armor" },
+    "studded": { def: 6, dr: 1, slots: 1, cost: 18, name: "Studded Leather" },
+    // Medium Armor
+    "chain_shirt": { def: 2, dr: 2, slots: 2, cost: 25, name: "Chain Shirt" },
+    "scale_mail": { def: 3, dr: 2, slots: 2, cost: 35, name: "Scale Mail" },
+    "chain_mail": { def: 4, dr: 2, slots: 2, cost: 45, name: "Chain Mail" },
+    // Heavy Armor
+    "banded_mail": { def: -2, dr: 3, slots: 3, cost: 60, name: "Banded Mail" },
+    "plate_mail": { def: -1, dr: 3, slots: 3, cost: 100, name: "Plate Mail" },
+    "full_plate": { def: 1, dr: 3, slots: 3, cost: 200, name: "Full Plate" }
+};
+
+// SHIELD DATA
+const shieldData = {
+    "0": { def: 0, dr: 0, slots: 0, cost: 0, name: "None", properties: "" },
+    "buckler": { def: 0, dr: 1, slots: 1, cost: 5, name: "Buckler", properties: "" },
+    "round": { def: 1, dr: 1, slots: 2, cost: 8, name: "Round Shield", properties: "" },
+    "tower": { def: 2, dr: 1, slots: 3, cost: 20, name: "Tower Shield", properties: "Unwieldy" }
+};
+
+// TAB SYSTEM
+const TABS = ["character", "inventory", "abilities", "dread"];
+TABS.forEach(tab => {
+    on(`clicked:tab_${tab}`, () => {
+        setAttrs({ tab });
+    });
+});
+
+// STRIKES SYSTEM - FIXED FOR ROLL20
+const updateStrikes = () => {
+    const strikeAttrs = [];
+    for (let i = 1; i <= 10; i++) {
+        strikeAttrs.push(`strike_${i}`);
+    }
+    strikeAttrs.push("strikes_max");
+    
+    getAttrs(strikeAttrs, v => {
+        const strikesMax = parseInt(v.strikes_max) || 0;
+        let strikesCurrent = 0;
+        
+        // Count checked strikes
+        for (let i = 1; i <= 10; i++) {
+            if (parseInt(v[`strike_${i}`]) === 1) {
+                strikesCurrent++;
+            }
+        }
+        
+        const strikesRemaining = Math.max(0, strikesMax - strikesCurrent);
+        
+        setAttrs({
+            strikes_current: strikesCurrent,
+            strikes_remaining: `${strikesRemaining} / ${strikesMax}`
+        });
+    });
+};
+
+// Listen for strike checkbox changes
+for (let i = 1; i <= 10; i++) {
+    on(`change:strike_${i}`, updateStrikes);
+}
+
+// Hide strike dots beyond max using CSS
+const updateStrikeVisibility = () => {
+    getAttrs(["strikes_max"], v => {
+        const strikesMax = parseInt(v.strikes_max) || 0;
+        
+        // We'll use a hidden attribute to track this for CSS
+        // Since we can't directly manipulate DOM, we'll handle visibility through CSS
+        setAttrs({
+            strikes_display_max: strikesMax
+        });
+    });
+};
+
+// CALCULATIONS
+const calculateSheet = () => {
+    getAttrs(["finesse", "endurance", "armor_type", "shield_type", "helmet"], v => {
+        const finesse = parseInt(v.finesse) || 0;
+        const endurance = parseInt(v.endurance) || 0;
+        const armorType = v.armor_type || "0";
+        const shieldType = v.shield_type || "0";
+        const helmet = parseInt(v.helmet) || 0;
+        
+        const armorDef = armorData[armorType] ? armorData[armorType].def : 0;
+        const shieldDef = shieldData[shieldType] ? shieldData[shieldType].def : 0;
+        const helmetDef = helmet ? 1 : 0;
+        const defense = 5 + finesse + armorDef + shieldDef + helmetDef;
+        
+        const armorDr = armorData[armorType] ? armorData[armorType].dr : 0;
+        const shieldDr = shieldData[shieldType] ? shieldData[shieldType].dr : 0;
+        const dr_chance = armorDr + shieldDr;
+        const dr_chance_display = `${dr_chance}/6`;
+        const inventory_max = 10 + endurance;
+        
+        // Calculate armor and shield slots used
+        const armorSlots = armorData[armorType] ? armorData[armorType].slots : 0;
+        const shieldSlots = shieldData[shieldType] ? shieldData[shieldType].slots : 0;
+        const totalArmorShieldSlots = armorSlots + shieldSlots;
+        
+        setAttrs({
+            defense: defense,
+            dr_chance: dr_chance,
+            dr_chance_display: dr_chance_display,
+            inventory_max: inventory_max,
+            armor_slots_used: totalArmorShieldSlots
+        });
+    });
+};
+
+// INVENTORY TRACKING
+const updateInventory = () => {
+    getSectionIDs('repeating_inventory', ids => {
+        if (!ids || ids.length === 0) {
+            setAttrs({ inventory_current: 0 });
+            return;
+        }
+        
+        const fields = ids.map(id => `repeating_inventory_${id}_item_slots`);
+        getAttrs(fields, v => {
+            const totalSlots = ids.reduce((sum, id) => {
+                return sum + (parseInt(v[`repeating_inventory_${id}_item_slots`]) || 0);
+            }, 0);
+            
+            setAttrs({ inventory_current: totalSlots });
+        });
+    });
+};
+
+// CLASS CHANGE HANDLER - FIXED
+const handleClassChange = (className) => {
+    const data = classData[className] || { strikes: 0 };
+    
+    if (className === "Custom") {
+        setAttrs({ show_custom_class: 1 });
+        // For custom class, use the custom_strikes_max value
+        getAttrs(["custom_strikes_max"], v => {
+            const customStrikes = parseInt(v.custom_strikes_max) || 5;
+            const updateObj = { strikes_max: customStrikes };
+            
+            // Clear all strike checkboxes
+            for (let i = 1; i <= 10; i++) {
+                updateObj[`strike_${i}`] = 0;
+            }
+            
+            setAttrs(updateObj, () => {
+                updateStrikes();
+                updateStrikeVisibility();
+            });
+        });
+    } else {
+        const updateObj = {
+            show_custom_class: 0,
+            strikes_max: data.strikes
+        };
+        
+        // Clear all strike checkboxes when changing class
+        for (let i = 1; i <= 10; i++) {
+            updateObj[`strike_${i}`] = 0;
+        }
+        
+        setAttrs(updateObj, () => {
+            updateStrikes();
+            updateStrikeVisibility();
+        });
+    }
+};
+
+// DREAD SYSTEM
+const updateDreadDisplay = () => {
+    getAttrs(["dread_level"], v => {
+        const dreadLevel = Math.max(0, Math.min(6, parseInt(v.dread_level) || 0));
+        setAttrs({ dread_display: dreadLevel });
+    });
+};
+
+const changeDread = (change) => {
+    getAttrs(["dread_level"], v => {
+        const currentDread = parseInt(v.dread_level) || 0;
+        const newDread = Math.max(0, Math.min(6, currentDread + change));
+        setAttrs({ dread_level: newDread }, () => {
+            updateDreadDisplay();
+        });
+    });
+};
+
+// TORCH SYSTEM
+const torchDieProgression = ["d12", "d10", "d8", "d6", "d4", "out"];
+
+const updateTorchDisplay = () => {
+    getAttrs(["torch_die", "torch_active"], v => {
+        const torchDie = v.torch_die || "d12";
+        const torchActive = parseInt(v.torch_active) || 1;
+        
+        let status = "Burning Bright";
+        if (torchDie === "out" || !torchActive) {
+            status = "Extinguished";
+        } else if (torchDie === "d4") {
+            status = "Flickering";
+        } else if (torchDie === "d6") {
+            status = "Dimming";
+        }
+        
+        setAttrs({ torch_status: status });
+    });
+};
+
+const degradeTorch = () => {
+    getAttrs(["torch_die"], v => {
+        const currentDie = v.torch_die || "d12";
+        const currentIndex = torchDieProgression.indexOf(currentDie);
+        
+        if (currentIndex < torchDieProgression.length - 1) {
+            const newDie = torchDieProgression[currentIndex + 1];
+            const newActive = newDie === "out" ? 0 : 1;
+            
+            setAttrs({
+                torch_die: newDie,
+                torch_active: newActive
+            }, () => {
+                updateTorchDisplay();
+                // If torch goes out, set dread to 6
+                if (newDie === "out") {
+                    setAttrs({ dread_level: 6 }, () => {
+                        updateDreadDisplay();
+                    });
+                }
+            });
+        }
+    });
+};
+
+const relightTorch = () => {
+    setAttrs({
+        torch_die: "d12",
+        torch_active: 1
+    }, () => {
+        updateTorchDisplay();
+    });
+};
+
+// EVENT LISTENERS
+const attributesToWatch = ["finesse", "endurance", "armor_type", "shield_type", "helmet"].map(attr => `change:${attr}`).join(" ");
+on(attributesToWatch, calculateSheet);
+
+on("change:class_name", (eventinfo) => handleClassChange(eventinfo.newValue));
+
+on("change:custom_strikes_max", () => {
+    getAttrs(["class_name", "custom_strikes_max"], v => {
+        if (v.class_name === "Custom") {
+            const customStrikes = parseInt(v.custom_strikes_max) || 5;
+            setAttrs({ strikes_max: customStrikes }, () => {
+                updateStrikes();
+                updateStrikeVisibility();
+            });
+        }
+    });
+});
+
+on("change:strikes_max", () => {
+    updateStrikes();
+    updateStrikeVisibility();
+});
+
+// Only inventory tracking - no ability sections
+on("change:repeating_inventory remove:repeating_inventory", updateInventory);
+
+// Dread system event listeners
+on("clicked:dread_increase", () => changeDread(1));
+on("clicked:dread_decrease", () => changeDread(-1));
+
+// Torch system event listeners
+on("clicked:torch_degrade", degradeTorch);
+on("clicked:torch_relight", relightTorch);
+
+// SHEET INITIALIZATION
+on("sheet:opened", () => {
+    calculateSheet();
+    updateInventory();
+    updateStrikes();
+    updateStrikeVisibility();
+    updateDreadDisplay();
+    updateTorchDisplay();
+    
+    // Ensure proper initial state for new characters
+    getAttrs(["strikes_max"], v => {
+        if (!v.strikes_max || v.strikes_max === "0") {
+            // No class selected yet, clear all strike checkboxes
+            const clearObj = {};
+            for (let i = 1; i <= 10; i++) {
+                clearObj[`strike_${i}`] = 0;
+            }
+            clearObj.strikes_current = 0;
+            clearObj.strikes_remaining = "0 / 0";
+            setAttrs(clearObj);
+        }
+    });
+});
+</script>
