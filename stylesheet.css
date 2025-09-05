@@ -1,6 +1,3 @@
-/* Torches in the Dark - CSS v9.5 "The Sorcerer's Ledger" Redesign
-Fixed fonts for Roll20 compatibility + Strike Dots + Polish Improvements + Compact Layout */
-
 /* --- FONTS & CORE STYLES --- */
 /* Removed @import - using web-safe fonts for Roll20 compatibility */
 .charsheet {
@@ -575,38 +572,785 @@ hr {
     margin: 10px 0; /* Tighter margins */
 }
 
-/* --- CURRENCY SYSTEM --- */
-.sheet-currency-grid {
+/* --- ENHANCED INVENTORY SYSTEM --- */
+.sheet-currency-section {
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.7) 0%, rgba(13, 13, 13, 0.9) 100%);
+    border: 2px solid rgba(169, 169, 169, 0.2);
+    margin-bottom: 15px;
+}
+
+.sheet-currency-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Smaller minimum */
-    gap: 10px; /* Tighter gap */
-    align-items: end;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+    padding: 10px;
+    background: rgba(10, 10, 10, 0.3);
+    border-radius: 4px;
+    margin-bottom: 10px;
 }
 
 .sheet-currency-item {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 4px;
+    padding: 10px;
+    background: linear-gradient(145deg, rgba(26, 26, 26, 0.5), rgba(10, 10, 10, 0.7));
+    border: 1px solid rgba(169, 169, 169, 0.15);
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.sheet-currency-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border-color: rgba(169, 169, 169, 0.3);
+}
+
+.sheet-currency-icon {
+    font-size: 1.8em;
+    line-height: 1;
+    margin-bottom: 4px;
+    opacity: 0.6;
+    transition: all 0.3s ease;
+}
+
+/* Updated currency colors per your specifications */
+.sheet-currency-golm .sheet-currency-icon {
+    color: #b87333; /* Copper */
+    text-shadow: 0 0 10px rgba(184, 115, 51, 0.3);
+}
+
+.sheet-currency-mark .sheet-currency-icon {
+    color: #c0c0c0; /* Silver */
+    text-shadow: 0 0 10px rgba(192, 192, 192, 0.3);
+}
+
+.sheet-currency-castar .sheet-currency-icon {
+    color: #ffd700; /* Gold */
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.sheet-currency-luminary .sheet-currency-icon {
+    color: #5dade2; /* Crystal Blue */
+    text-shadow: 0 0 10px rgba(93, 173, 226, 0.5);
+}
+
+.sheet-currency-item:hover .sheet-currency-icon {
+    opacity: 1;
+    transform: scale(1.2);
 }
 
 .sheet-currency-item label {
     font-family: Georgia, "Times New Roman", serif;
-    font-size: 0.9em; /* Smaller */
+    font-size: 1em;
     font-weight: 600;
     color: rgba(169, 169, 169, 0.9);
-    text-transform: capitalize;
-    margin-bottom: 0;
-    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0;
+    text-align: center; /* Center the currency names */
 }
 
 .sheet-currency-item input[type="number"] {
     text-align: center;
-    font-size: 1em; /* Smaller */
-    font-weight: 600;
-    padding: 5px 8px; /* Smaller padding */
-    background-color: rgba(26, 26, 26, 0.7);
-    border: 1px solid rgba(169, 169, 169, 0.3);
+    font-size: 1.3em;
+    font-weight: bold;
+    padding: 6px 8px;
+    background-color: rgba(10, 10, 10, 0.7);
+    border: 2px solid rgba(169, 169, 169, 0.2);
+    color: #e0e0e0;
+    width: 80px;
+    border-radius: 4px;
+}
+
+/* Match input colors to new icon colors */
+.sheet-currency-golm input {
+    color: #b87333; /* Copper */
+    border-color: rgba(184, 115, 51, 0.2);
+}
+
+.sheet-currency-mark input {
+    color: #c0c0c0; /* Silver */
+    border-color: rgba(192, 192, 192, 0.2);
+}
+
+.sheet-currency-castar input {
+    color: #ffd700; /* Gold */
+    border-color: rgba(255, 215, 0, 0.2);
+}
+
+.sheet-currency-luminary input {
+    color: #5dade2; /* Crystal Blue */
+    border-color: rgba(93, 173, 226, 0.2);
+}
+
+.sheet-currency-desc {
+    font-size: 0.7em;
+    color: rgba(169, 169, 169, 0.5);
+    text-align: center;
+    margin-top: 2px;
+}
+
+.sheet-wealth-total {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    background: rgba(10, 10, 10, 0.4);
+    border-top: 1px solid rgba(169, 169, 169, 0.1);
+}
+
+.sheet-wealth-label {
+    font-size: 0.9em;
+    color: rgba(169, 169, 169, 0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.sheet-wealth-value {
+    font-size: 1em;
+    font-weight: bold;
     color: #ffa500;
+}
+
+/* Inventory Headers */
+.sheet-inventory-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 6px 10px;
+    background: rgba(10, 10, 10, 0.3);
+    border-radius: 4px;
+    border: 1px solid rgba(169, 169, 169, 0.1);
+}
+
+.sheet-slots-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.sheet-slots-label {
+    font-size: 0.85em;
+    color: rgba(169, 169, 169, 0.6);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.sheet-slots-current {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #e0e0e0;
+}
+
+.sheet-slots-max {
+    font-size: 1.2em;
+    color: rgba(169, 169, 169, 0.8);
+}
+
+.sheet-weight-status {
+    font-size: 0.85em;
+    padding: 3px 8px;
+    background: rgba(26, 26, 26, 0.5);
+    border: 1px solid rgba(169, 169, 169, 0.2);
+    border-radius: 3px;
+    color: #50c878;
+    font-weight: 600;
+}
+
+/* Weapon Items */
+.sheet-weapon-item {
+    display: grid;
+    gap: 8px;
+    padding: 10px;
+    background: rgba(10, 10, 10, 0.3);
+    border: 1px solid rgba(169, 169, 169, 0.15);
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+.sheet-weapon-stats {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 8px;
+}
+
+.sheet-weapon-damage {
+    font-family: monospace;
+    background: rgba(26, 26, 26, 0.5);
+}
+
+.sheet-weapon-bonus {
+    font-family: monospace;
+    font-size: 0.9em;
+}
+
+.sheet-weapon-roll {
+    background: linear-gradient(135deg, rgba(61, 0, 0, 0.3) 0%, rgba(26, 26, 26, 0.6) 100%) !important;
+    border: 1px solid rgba(199, 0, 57, 0.3) !important;
+}
+
+.sheet-weapon-roll:hover {
+    background: linear-gradient(135deg, rgba(199, 0, 57, 0.3) 0%, rgba(61, 0, 0, 0.6) 100%) !important;
+    border-color: rgba(199, 0, 57, 0.5) !important;
+}
+
+/* Inventory Items */
+.sheet-inventory-item {
+    display: grid;
+    gap: 8px;
+    padding: 10px;
+    background: rgba(10, 10, 10, 0.3);
+    border: 1px solid rgba(169, 169, 169, 0.15);
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+.sheet-item-name {
+    font-weight: 600;
+    background: rgba(26, 26, 26, 0.5);
+}
+
+.sheet-item-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px;
+    background: rgba(26, 26, 26, 0.3);
+    border-radius: 3px;
+}
+
+.sheet-quantity-input,
+.sheet-slots-input {
+    width: 50px !important;
+    text-align: center;
+    font-weight: bold;
+}
+
+.sheet-item-x,
+.sheet-slots-equals {
+    color: rgba(169, 169, 169, 0.5);
+    font-weight: bold;
+}
+
+.sheet-total-slots {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #ffa500;
+    padding: 4px 8px;
+    background: rgba(10, 10, 10, 0.5);
+    border-radius: 3px;
+    min-width: 30px;
+    text-align: center;
+}
+
+.sheet-item-desc {
+    font-size: 0.85em;
+    min-height: 40px;
+    background: rgba(10, 10, 10, 0.3);
+}
+
+/* --- CONSUMABLES GRID FIXES - CORRECTED --- */
+.sheet-consumables-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 12px;
+    padding: 12px;
+    background: rgba(10, 10, 10, 0.3);
+    border-radius: 4px;
+}
+
+.sheet-consumable-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px;
+    background: rgba(26, 26, 26, 0.5);
+    border: 1px solid rgba(169, 169, 169, 0.1);
+    border-radius: 4px;
+    text-align: center;
+    min-width: 110px;
+}
+
+.sheet-consumable-item label {
+    font-size: 0.85em;
+    font-weight: 600;
+    color: rgba(169, 169, 169, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0;
+    margin-bottom: 4px;
+}
+
+/* CORRECTED consumable input - removed text-indent */
+.sheet-consumable-input[type="number"] {
+    text-align: center !important;
+    font-size: 1.1em;
+    font-weight: bold;
+    padding: 8px 8px 8px 8px !important; /* Even padding all around */
+    background: rgba(10, 10, 10, 0.7);
+    border: 1px solid rgba(169, 169, 169, 0.2);
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 3px;
+    min-height: 36px;
+    color: #e0e0e0;
+    position: relative;
+    /* Remove text-indent - it was causing the misalignment */
+}
+
+/* Make spinners smaller and less intrusive */
+.sheet-consumable-input[type="number"]::-webkit-inner-spin-button,
+.sheet-consumable-input[type="number"]::-webkit-outer-spin-button {
+    opacity: 0.5; /* Make them semi-transparent */
+    position: absolute;
+    right: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 16px;
+    width: 16px;
+    margin: 0;
+}
+
+/* Show spinners more clearly on hover */
+.sheet-consumable-input[type="number"]:hover::-webkit-inner-spin-button,
+.sheet-consumable-input[type="number"]:hover::-webkit-outer-spin-button {
+    opacity: 1;
+}
+
+/* Firefox specific adjustments */
+@-moz-document url-prefix() {
+    .sheet-consumable-input[type="number"] {
+        padding: 8px !important;
+        text-align: center !important;
+    }
+}
+
+/* Hover and focus states */
+.sheet-consumable-input:hover,
+.sheet-consumable-input:focus {
+    background: rgba(10, 10, 10, 0.9);
+    outline: none;
+    border-color: rgba(169, 169, 169, 0.5);
+    box-shadow: 0 0 4px rgba(169, 169, 169, 0.2);
+}
+
+/* Encumbrance color coding */
+span[name="attr_encumbrance_status"][value*="Unencumbered"] {
+    color: #50c878;
+}
+
+span[name="attr_encumbrance_status"][value*="Light"] {
+    color: #87ceeb;
+}
+
+span[name="attr_encumbrance_status"][value*="Medium"] {
+    color: #ffa500;
+}
+
+span[name="attr_encumbrance_status"][value*="Heavy"] {
+    color: #ff6347;
+}
+
+span[name="attr_encumbrance_status"][value*="Overencumbered"] {
+    color: #c70039;
+}
+
+/* --- ENHANCED ABILITIES SYSTEM --- */
+.sheet-abilities-section,
+.sheet-traits-section,
+.sheet-magic-section {
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.6) 0%, rgba(13, 13, 13, 0.8) 100%);
+    border: 1px solid rgba(169, 169, 169, 0.2);
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 12px;
+}
+
+.sheet-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid rgba(169, 169, 169, 0.1);
+}
+
+.sheet-section-header h3 {
+    margin: 0;
+    padding: 0;
+}
+
+.sheet-ability-class-name {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.1em;
+    color: #87ceeb;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+/* Ability Cards */
+.sheet-ability-card {
+    background: rgba(10, 10, 10, 0.4);
+    border: 1px solid rgba(169, 169, 169, 0.15);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.sheet-ability-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: linear-gradient(180deg, #87ceeb 0%, #50c878 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sheet-ability-card:hover::before {
+    opacity: 1;
+}
+
+.sheet-ability-card:hover {
+    background: rgba(10, 10, 10, 0.6);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transform: translateX(2px);
+}
+
+.sheet-ability-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.sheet-ability-title {
+    font-size: 1.1em;
+    font-weight: 600;
+    background: rgba(26, 26, 26, 0.4);
+    border: 1px solid rgba(169, 169, 169, 0.2);
+    padding: 8px;
+    color: #e0e0e0;
+}
+
+.sheet-ability-type {
+    width: 120px;
+    background: rgba(26, 26, 26, 0.4);
+    color: #e0e0e0;
+    border: 1px solid rgba(169, 169, 169, 0.2);
+    padding: 8px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.sheet-ability-type option[value="passive"] {
+    background: #0a0a0a;
+}
+
+.sheet-ability-type option[value="active"] {
+    background: #0a0a0a;
+}
+
+.sheet-ability-type option[value="reaction"] {
+    background: #0a0a0a;
+}
+
+.sheet-ability-desc {
+    width: 100%;
+    min-height: 60px;
+    background: rgba(10, 10, 10, 0.3);
+    border: 1px solid rgba(169, 169, 169, 0.1);
+    padding: 8px;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+    line-height: 1.4;
+}
+
+.sheet-ability-footer {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    align-items: center;
+}
+
+.sheet-ability-cost {
+    background: rgba(26, 26, 26, 0.3);
+    border: 1px solid rgba(169, 169, 169, 0.2);
+    padding: 6px;
+    font-size: 0.9em;
+    color: #ffa500;
+    font-weight: 600;
+}
+
+.sheet-ability-use-btn {
+    background: linear-gradient(135deg, #1a4d2e 0%, #0a0a0a 100%) !important;
+    border: 1px solid #50c878 !important;
+    color: #50c878 !important;
+    padding: 6px 12px !important;
+    font-weight: 600 !important;
+    font-size: 0.8em !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    transition: all 0.3s ease !important;
+}
+
+.sheet-ability-use-btn:hover {
+    background: linear-gradient(135deg, #50c878 0%, #1a4d2e 100%) !important;
+    color: #0a0a0a !important;
+    box-shadow: 0 0 10px rgba(80, 200, 120, 0.4) !important;
+}
+
+/* Trait Cards */
+.sheet-trait-card {
+    background: rgba(10, 10, 10, 0.3);
+    border: 1px solid rgba(169, 169, 169, 0.1);
+    border-radius: 6px;
+    padding: 10px;
+    margin-bottom: 8px;
+    transition: all 0.2s ease;
+}
+
+.sheet-trait-card:hover {
+    background: rgba(20, 20, 20, 0.4);
+    border-color: rgba(169, 169, 169, 0.2);
+}
+
+.sheet-trait-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.sheet-trait-icon {
+    font-size: 1.2em;
+    color: #ffa500;
+    opacity: 0.7;
+}
+
+.sheet-trait-title {
+    flex: 1;
+    font-weight: 600;
+    background: rgba(26, 26, 26, 0.3);
+    border: 1px solid rgba(169, 169, 169, 0.1);
+    padding: 6px;
+}
+
+.sheet-trait-desc {
+    width: 100%;
+    min-height: 50px;
+    background: rgba(10, 10, 10, 0.2);
+    border: 1px solid rgba(169, 169, 169, 0.1);
+    padding: 6px;
+    margin-bottom: 8px;
+    font-size: 0.85em;
+}
+
+.sheet-trait-tags {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.sheet-trait-category {
+    background: rgba(26, 26, 26, 0.3);
+    border: 1px solid rgba(169, 169, 169, 0.1);
+    padding: 4px 8px;
+    font-size: 0.8em;
+    color: rgba(169, 169, 169, 0.8);
+    border-radius: 3px;
+}
+
+.sheet-trait-active {
+    width: 16px !important;
+    height: 16px !important;
+}
+
+.sheet-trait-active-label {
+    font-size: 0.85em;
+    color: rgba(169, 169, 169, 0.7);
+}
+
+.sheet-trait-count {
+    font-size: 0.9em;
+    color: rgba(169, 169, 169, 0.6);
+    font-weight: 600;
+}
+
+/* Spell/Miracle Cards */
+.sheet-magic-pool {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: rgba(10, 10, 10, 0.3);
+    border: 1px solid rgba(169, 169, 169, 0.2);
+    border-radius: 4px;
+}
+
+.sheet-magic-pool label {
+    font-size: 0.9em;
+    color: rgba(169, 169, 169, 0.8);
+    margin: 0;
+}
+
+.sheet-power-current,
+.sheet-power-max {
+    width: 50px !important;
+    text-align: center;
+    font-weight: bold;
+    background: rgba(26, 26, 26, 0.5);
+    border: 1px solid rgba(87, 206, 235, 0.3);
+    color: #87ceeb;
+    padding: 4px;
+}
+
+.sheet-spell-card {
+    background: linear-gradient(135deg, rgba(10, 10, 30, 0.3) 0%, rgba(10, 10, 10, 0.5) 100%);
+    border: 1px solid rgba(87, 206, 235, 0.2);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 10px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.sheet-spell-card:hover {
+    border-color: rgba(87, 206, 235, 0.4);
+    box-shadow: 0 0 15px rgba(87, 206, 235, 0.2);
+}
+
+.sheet-spell-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.sheet-spell-title {
+    font-size: 1.05em;
+    font-weight: 600;
+    background: rgba(26, 26, 26, 0.4);
+    border: 1px solid rgba(87, 206, 235, 0.2);
+    padding: 8px;
+    color: #87ceeb;
+}
+
+.sheet-spell-school {
+    width: 140px;
+    background: rgba(26, 26, 26, 0.4);
+    border: 1px solid rgba(169, 169, 169, 0.2);
+    padding: 8px;
+    font-weight: 600;
+}
+
+/* Torches in the Dark specific magic schools */
+.sheet-spell-school option[value="eldritch"] {
+    background: #0a0a0a;
+    color: #9b59b6; /* Purple for Eldritch */
+}
+
+.sheet-spell-school option[value="arcane"] {
+    background: #0a0a0a;
+    color: #3498db; /* Blue for Arcane */
+}
+
+.sheet-spell-school option[value="spirit"] {
+    background: #0a0a0a;
+    color: #1abc9c; /* Teal for Spirit */
+}
+
+.sheet-spell-school option[value="crown"] {
+    background: #0a0a0a;
+    color: #f1c40f; /* Gold for Crown */
+}
+
+.sheet-spell-school option[value="radiant"] {
+    background: #0a0a0a;
+    color: #ecf0f1; /* Bright white for Radiant */
+}
+
+.sheet-spell-school option[value="fire"] {
+    background: #0a0a0a;
+    color: #e74c3c; /* Red-orange for Fire */
+}
+
+.sheet-spell-school option[value="blood"] {
+    background: #0a0a0a;
+    color: #c0392b; /* Dark red for Blood */
+}
+
+.sheet-spell-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.sheet-spell-range,
+.sheet-spell-duration,
+.sheet-spell-cost {
+    background: rgba(10, 10, 10, 0.3);
+    border: 1px solid rgba(169, 169, 169, 0.1);
+    padding: 6px;
+    font-size: 0.85em;
+    text-align: center;
+}
+
+.sheet-spell-desc {
+    width: 100%;
+    min-height: 60px;
+    background: rgba(10, 10, 10, 0.3);
+    border: 1px solid rgba(169, 169, 169, 0.1);
+    padding: 8px;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+    line-height: 1.4;
+}
+
+.sheet-spell-footer {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 10px;
+    align-items: center;
+}
+
+.sheet-spell-damage {
+    background: rgba(26, 26, 26, 0.3);
+    border: 1px solid rgba(199, 0, 57, 0.2);
+    padding: 6px;
+    font-size: 0.9em;
+    color: #ff6347;
+    font-weight: 600;
+    font-family: monospace;
+}
+
+.sheet-spell-cast-btn {
+    background: linear-gradient(135deg, rgba(87, 206, 235, 0.3) 0%, rgba(26, 26, 26, 0.6) 100%) !important;
+    border: 1px solid rgba(87, 206, 235, 0.5) !important;
+    color: #87ceeb !important;
+    padding: 8px 16px !important;
+    font-weight: 600 !important;
+    font-size: 0.85em !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    transition: all 0.3s ease !important;
+}
+
+.sheet-spell-cast-btn:hover {
+    background: linear-gradient(135deg, rgba(87, 206, 235, 0.5) 0%, rgba(50, 100, 150, 0.6) 100%) !important;
+    box-shadow: 0 0 15px rgba(87, 206, 235, 0.4) !important;
+    transform: scale(1.05);
 }
 
 /* --- DREAD SYSTEM --- */
