@@ -1,0 +1,628 @@
+/* CE RPG Character Sheet - Dark Fantasy Style */
+
+/* Variables for consistent theming */
+:root {
+    --primary-bg: #1a1a1a;
+    --secondary-bg: #2d2d2d;
+    --accent-bg: #3a3a3a;
+    --text-primary: #e0e0e0;
+    --text-secondary: #b0b0b0;
+    --text-accent: #c9b037;
+    --border-color: #555;
+    --border-accent: #8b4513;
+    --danger-color: #8b0000;
+    --success-color: #2d5a2d;
+    --shadow-color: rgba(0, 0, 0, 0.7);
+    --parchment: #f4e4bc;
+    --ink: #2c1810;
+    --blood-red: #722f37;
+}
+
+/* Global Styles */
+.charsheet {
+    font-family: 'Cinzel', 'Georgia', serif;
+    background: linear-gradient(135deg, var(--primary-bg) 0%, var(--secondary-bg) 100%);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Reset and base styles */
+.charsheet * {
+    box-sizing: border-box;
+}
+
+.charsheet input,
+.charsheet textarea,
+.charsheet select {
+    background: var(--accent-bg);
+    border: 2px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 8px;
+    border-radius: 4px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+.charsheet input:focus,
+.charsheet textarea:focus,
+.charsheet select:focus {
+    border-color: var(--text-accent);
+    box-shadow: 0 0 8px rgba(201, 176, 55, 0.3);
+    outline: none;
+}
+
+.charsheet input[readonly] {
+    background: var(--secondary-bg);
+    border-color: var(--border-color);
+    color: var(--text-secondary);
+}
+
+/* Header Styles */
+.sheet-header {
+    background: linear-gradient(90deg, var(--secondary-bg) 0%, var(--accent-bg) 50%, var(--secondary-bg) 100%);
+    border: 3px solid var(--border-accent);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.char-name {
+    font-size: 2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    background: var(--primary-bg);
+    border: 3px solid var(--text-accent);
+    color: var(--text-accent);
+    text-align: center;
+    flex: 1;
+    margin-right: 20px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-right label {
+    font-weight: bold;
+    color: var(--text-accent);
+}
+
+.header-details {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.detail-item label {
+    font-weight: bold;
+    color: var(--text-accent);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+/* Main Layout */
+.sheet-main {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    min-height: calc(100vh - 200px);
+}
+
+/* Section Styles */
+.section {
+    background: var(--secondary-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px var(--shadow-color);
+    margin-bottom: 15px;
+}
+
+.section h3 {
+    background: linear-gradient(90deg, var(--border-accent), var(--text-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 1.3rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0 0 15px 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.section h4 {
+    color: var(--text-accent);
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin: 15px 0 10px 0;
+    text-transform: uppercase;
+}
+
+.section-desc {
+    font-style: italic;
+    color: var(--text-secondary);
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+}
+
+/* Attribute Grid */
+.attribute-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.attribute {
+    background: var(--accent-bg);
+    border: 2px solid var(--border-color);
+    padding: 12px;
+    border-radius: 6px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.attribute:hover {
+    border-color: var(--text-accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.attribute label {
+    display: block;
+    font-weight: bold;
+    color: var(--text-accent);
+    font-size: 1rem;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.attribute input {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    background: var(--primary-bg);
+    border: 3px solid var(--border-color);
+    border-radius: 50%;
+    color: var(--text-accent);
+}
+
+.attr-desc {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: 8px;
+    font-style: italic;
+}
+
+/* Vitals Grid */
+.vitals-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.vital-stat {
+    background: var(--accent-bg);
+    border: 2px solid var(--border-color);
+    padding: 10px;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.vital-stat label {
+    display: block;
+    font-weight: bold;
+    color: var(--text-accent);
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.vital-tracker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.vital-tracker input {
+    width: 50px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.vital-tracker span {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--text-accent);
+}
+
+/* Resource Grid */
+.resource-grid {
+    display: grid;
+    gap: 12px;
+}
+
+.resource {
+    background: var(--accent-bg);
+    border: 2px solid var(--border-color);
+    padding: 12px;
+    border-radius: 6px;
+}
+
+.resource label {
+    display: block;
+    font-weight: bold;
+    color: var(--text-accent);
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.resource input {
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.resource-desc {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+/* Traits Section */
+.trait-item {
+    background: var(--accent-bg);
+    border: 2px solid var(--border-color);
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.trait-name {
+    width: calc(100% - 80px);
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.bid-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: var(--danger-color);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.bid-button:hover {
+    background: var(--blood-red);
+    transform: scale(1.05);
+}
+
+.trait-desc {
+    width: 100%;
+    min-height: 60px;
+    resize: vertical;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: grid;
+    gap: 10px;
+}
+
+.action-buttons button {
+    background: linear-gradient(135deg, var(--border-accent), var(--text-accent));
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.action-buttons button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--shadow-color);
+    filter: brightness(1.1);
+}
+
+/* Abilities Section */
+.ability-item {
+    background: var(--accent-bg);
+    border: 2px solid var(--border-color);
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.ability-name {
+    width: calc(100% - 120px);
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.ability-type {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 100px;
+}
+
+.ability-desc {
+    width: 100%;
+    min-height: 50px;
+    margin-bottom: 10px;
+    resize: vertical;
+}
+
+.ability-upgrade {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ability-upgrade label {
+    font-weight: bold;
+    color: var(--text-accent);
+}
+
+.ability-upgrade input {
+    width: 60px;
+    text-align: center;
+}
+
+/* Equipment Section */
+.gear-item {
+    background: var(--accent-bg);
+    border: 2px solid var(--border-color);
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.gear-name {
+    width: calc(100% - 140px);
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.gear-traits {
+    position: absolute;
+    top: 15px;
+    right: 80px;
+    width: 50px;
+    text-align: center;
+}
+
+.gear-item button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: var(--success-color);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.gear-desc {
+    width: 100%;
+    min-height: 50px;
+    resize: vertical;
+}
+
+/* Notes Section */
+.background-text,
+.notes-text,
+.secrets-text {
+    width: 100%;
+    min-height: 100px;
+    resize: vertical;
+    margin-bottom: 15px;
+}
+
+/* Roll Templates */
+.template-container {
+    background: var(--parchment);
+    color: var(--ink);
+    border: 3px solid var(--border-accent);
+    border-radius: 8px;
+    margin: 10px 0;
+    box-shadow: 0 4px 8px var(--shadow-color);
+    font-family: 'Cinzel', serif;
+}
+
+.template-header {
+    background: linear-gradient(90deg, var(--border-accent), var(--text-accent));
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px 5px 0 0;
+    text-align: center;
+}
+
+.template-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.template-body {
+    padding: 15px;
+}
+
+.throwdown-template .roll-result {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
+}
+
+.action-die,
+.aspect-die {
+    background: var(--accent-bg);
+    color: var(--text-primary);
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.success-count {
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--success-color);
+}
+
+.trait-bid,
+.gear-bid,
+.roll-result {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+.trait-description {
+    background: var(--secondary-bg);
+    color: var(--text-primary);
+    padding: 10px;
+    border-radius: 4px;
+    font-style: italic;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .sheet-main {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .sheet-main {
+        grid-template-columns: 1fr;
+    }
+    
+    .header-top {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .char-name {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    
+    .header-details {
+        justify-content: center;
+    }
+    
+    .attribute-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .vitals-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Repeating Section Styles */
+.repcontainer {
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+.repitem {
+    border: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Animation for interactive elements */
+@keyframes glow {
+    0% { box-shadow: 0 0 5px var(--text-accent); }
+    50% { box-shadow: 0 0 20px var(--text-accent); }
+    100% { box-shadow: 0 0 5px var(--text-accent); }
+}
+
+.charsheet input:focus,
+.charsheet textarea:focus {
+    animation: glow 2s ease-in-out infinite;
+}
+
+/* Custom scrollbars */
+.charsheet ::-webkit-scrollbar {
+    width: 8px;
+}
+
+.charsheet ::-webkit-scrollbar-track {
+    background: var(--primary-bg);
+}
+
+.charsheet ::-webkit-scrollbar-thumb {
+    background: var(--border-accent);
+    border-radius: 4px;
+}
+
+.charsheet ::-webkit-scrollbar-thumb:hover {
+    background: var(--text-accent);
+}
+
+/* Print Styles */
+@media print {
+    .charsheet {
+        background: white;
+        color: black;
+        font-size: 12pt;
+    }
+    
+    .section {
+        break-inside: avoid;
+        border: 2px solid black;
+        box-shadow: none;
+    }
+    
+    .template-container {
+        display: none;
+    }
+}

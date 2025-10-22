@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CE RPG Character Sheet</title>
+    <!-- Roll20 Sheet Configuration -->
+    <script type="text/worker">
+        on("sheet:opened", function() {
+            // Initialize sheet calculations
+            calculateDerivedStats();
+        });
+        
+        // Auto-calculate derived stats
+        on("change:might change:finesse change:wits change:will change:vigor", function() {
+            calculateDerivedStats();
+        });
+        
+        function calculateDerivedStats() {
+            getAttrs(["might", "finesse", "wits", "will", "vigor"], function(values) {
+                const might = parseInt(values.might) || 0;
+                const finesse = parseInt(values.finesse) || 0;
+                const wits = parseInt(values.wits) || 0;
+                const will = parseInt(values.will) || 0;
+                const vigor = parseInt(values.vigor) || 0;
+                
+                // Calculate derived stats
+                const wounds = Math.max(1, might + vigor);
+                const sanity = Math.max(1, will + wits);
+                const initiative = finesse + wits;
+                const defense = 10 + finesse;
+                
+                setAttrs({
+                    wounds_max: wounds,
+                    sanity_max: sanity,
+                    initiative_base: initiative,
+                    defense: defense
+                });
+            });
+        }
+        
+        // Handle trait bidding
+        on("clicked:bid-trait", function(eventinfo) {
+            const traitName = eventinfo.sourceAttribute.replace("bid-trait-", "");
+            getAttrs([traitName + "_name", traitName + "_description"], function(values) {
+                const name = values[traitName + "_name"] || "Unknown Trait";
+                const description = values[traitName + "_description"] || "";
+                
+                // Output to chat
+                const output = `&{template:ce-trait} {{character=@{character_name}}} {{trait=${name}}} {{description=${description}}} {{action=BIDS TRAIT}}`;
+                setAttrs({
+                    trait_output: output
+                });
+            });
+        });
+        
+        // Handle throw down rolls
+        on("clicked:throw-down", function() {
+            const output = `&{template:ce-throwdown} {{character=@{character_name}}} {{action=[[1d10]]}} {{aspect=[[1d?{Aspect Die|d4|d6|d8|d10|d12}]]}}`;
+            setAttrs({
+                throwdown_output: output
+            });
+        });
+    </script>
+</head>
+<body>
+    <!-- Character Sheet Container -->
+    <div class="charsheet">
+        <!-- Header Section -->
+        <div class="sheet-header">
+            <div class="header-top">
+                <input type="text" name="attr_character_name" class="char-name" placeholder="CHARACTER NAME" />
+                <div class="header-right">
+                    <label>Player:</label>
+                    <input type="text" name="attr_player_name" placeholder="Player Name" />
+                </div>
+            </div>
+            <div class="header-details">
+                <div class="detail-item">
+                    <label>Origin:</label>
+                    <input type="text" name="attr_origin" placeholder="Origin" />
+                </div>
+                <div class="detail-item">
+                    <label>Calling:</label>
+                    <input type="text" name="attr_calling" placeholder="Calling" />
+                </div>
+                <div class="detail-item">
+                    <label>Experience:</label>
+                    <input type="number" name="attr_experience" value="0" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="sheet-main">
+            <!-- Left Column - Attributes & Core Stats -->
+            <div class="left-column">
+                <!-- Attributes Section -->
+                <div class="section attributes">
+                    <h3>ATTRIBUTES</h3>
+                    <div class="attribute-grid">
+                        <div class="attribute">
+                            <label>MIGHT</label>
+                            <input type="number" name="attr_might" value="1" min="1" max="12" />
+                            <span class="attr-desc">Physical Power</span>
+                        </div>
+                        <div class="attribute">
+                            <label>FINESSE</label>
+                            <input type="number" name="attr_finesse" value="1" min="1" max="12" />
+                            <span class="attr-desc">Agility & Grace</span>
+                        </div>
+                        <div class="attribute">
+                            <label>WITS</label>
+                            <input type="number" name="attr_wits" value="1" min="1" max="12" />
+                            <span class="attr-desc">Cleverness & Insight</span>
+                        </div>
+                        <div class="attribute">
+                            <label>WILL</label>
+                            <input type="number" name="attr_will" value="1" min="1" max="12" />
+                            <span class="attr-desc">Mental Fortitude</span>
+                        </div>
+                        <div class="attribute">
+                            <label>VIGOR</label>
+                            <input type="number" name="attr_vigor" value="1" min="1" max="12" />
+                            <span class="attr-desc">Endurance & Health</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Derived Stats -->
+                <div class="section derived-stats">
+                    <h3>VITALS</h3>
+                    <div class="vitals-grid">
+                        <div class="vital-stat">
+                            <label>WOUNDS</label>
+                            <div class="vital-tracker">
+                                <input type="number" name="attr_wounds" value="0" />
+                                <span>/</span>
+                                <input type="number" name="attr_wounds_max" readonly />
+                            </div>
+                        </div>
+                        <div class="vital-stat">
+                            <label>SANITY</label>
+                            <div class="vital-tracker">
+                                <input type="number" name="attr_sanity" value="0" />
+                                <span>/</span>
+                                <input type="number" name="attr_sanity_max" readonly />
+                            </div>
+                        </div>
+                        <div class="vital-stat">
+                            <label>PLOT ARMOR</label>
+                            <input type="number" name="attr_plot_armor" value="3" />
+                        </div>
+                        <div class="vital-stat">
+                            <label>DEFENSE</label>
+                            <input type="number" name="attr_defense" readonly />
+                        </div>
+                        <div class="vital-stat">
+                            <label>INITIATIVE</label>
+                            <input type="number" name="attr_initiative_base" readonly />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resources Section -->
+                <div class="section resources">
+                    <h3>RESOURCES</h3>
+                    <div class="resource-grid">
+                        <div class="resource">
+                            <label>CUNNING</label>
+                            <input type="number" name="attr_cunning" value="3" min="0" />
+                            <span class="resource-desc">Act twice in a round</span>
+                        </div>
+                        <div class="resource">
+                            <label>BREATH</label>
+                            <input type="number" name="attr_breath" value="1" min="0" />
+                            <span class="resource-desc">Go to Limbo</span>
+                        </div>
+                        <div class="resource">
+                            <label>PIPS</label>
+                            <input type="number" name="attr_pips" value="0" min="0" />
+                            <span class="resource-desc">Change the past</span>
+                        </div>
+                        <div class="resource">
+                            <label>NARRATIVE POINTS</label>
+                            <input type="number" name="attr_narrative_points" value="0" min="0" />
+                            <span class="resource-desc">Change the present</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center Column - Traits & Actions -->
+            <div class="center-column">
+                <!-- Traits Section -->
+                <div class="section traits">
+                    <h3>TRAITS</h3>
+                    <p class="section-desc">The defining characteristics that shape your character</p>
+                    
+                    <fieldset class="repcontainer">
+                        <fieldset class="repitem">
+                            <div class="trait-item">
+                                <input type="text" name="attr_trait_name" placeholder="Trait Name" class="trait-name" />
+                                <button type="action" name="act_bid-trait" class="bid-button">BID</button>
+                                <textarea name="attr_trait_description" placeholder="Describe this trait and how it defines your character..." class="trait-desc"></textarea>
+                            </div>
+                        </fieldset>
+                    </fieldset>
+                </div>
+
+                <!-- Actions Section -->
+                <div class="section actions">
+                    <h3>ACTIONS</h3>
+                    <div class="action-buttons">
+                        <button type="roll" name="roll_throw-down" value="&{template:ce-throwdown} {{character=@{character_name}}} {{action=[[1d10]]}} {{aspect=[[1d?{Aspect Die|d4|d6|d8|d10|d12}]]}}">
+                            THROW DOWN
+                        </button>
+                        <button type="roll" name="roll_initiative" value="&{template:ce-roll} {{character=@{character_name}}} {{action=Initiative}} {{result=[[1d10+@{initiative_base}]]}}">
+                            INITIATIVE
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Abilities Section -->
+                <div class="section abilities">
+                    <h3>ABILITIES</h3>
+                    <p class="section-desc">Special powers beyond mortal ken</p>
+                    
+                    <fieldset class="repcontainer">
+                        <fieldset class="repitem">
+                            <div class="ability-item">
+                                <input type="text" name="attr_ability_name" placeholder="Ability Name" class="ability-name" />
+                                <select name="attr_ability_type" class="ability-type">
+                                    <option value="magicka">Magicka</option>
+                                    <option value="combat">Combat</option>
+                                    <option value="social">Social</option>
+                                    <option value="utility">Utility</option>
+                                </select>
+                                <textarea name="attr_ability_description" placeholder="Describe the ability and its effects..." class="ability-desc"></textarea>
+                                <div class="ability-upgrade">
+                                    <label>Upgrades:</label>
+                                    <input type="number" name="attr_ability_upgrades" value="0" min="0" max="5" />
+                                </div>
+                            </div>
+                        </fieldset>
+                    </fieldset>
+                </div>
+            </div>
+
+            <!-- Right Column - Equipment & Notes -->
+            <div class="right-column">
+                <!-- Equipment Section -->
+                <div class="section equipment">
+                    <h3>NINJA GEAR</h3>
+                    <p class="section-desc">Tools of the trade</p>
+                    
+                    <fieldset class="repcontainer">
+                        <fieldset class="repitem">
+                            <div class="gear-item">
+                                <input type="text" name="attr_gear_name" placeholder="Gear Name" class="gear-name" />
+                                <input type="number" name="attr_gear_traits" value="1" min="1" max="5" class="gear-traits" title="Number of traits (determines die type)" />
+                                <textarea name="attr_gear_description" placeholder="Describe the gear and its traits..." class="gear-desc"></textarea>
+                                <button type="roll" name="roll_gear" value="&{template:ce-gear} {{character=@{character_name}}} {{gear=@{gear_name}}} {{roll=[[1d?{Die Type|4|6|8|10|12}]]}}">
+                                    BID GEAR
+                                </button>
+                            </div>
+                        </fieldset>
+                    </fieldset>
+                </div>
+
+                <!-- Notes Section -->
+                <div class="section notes">
+                    <h3>CHRONICLES</h3>
+                    <textarea name="attr_background" placeholder="Character background, motivations, and important details..." class="background-text"></textarea>
+                    
+                    <h4>CAMPAIGN NOTES</h4>
+                    <textarea name="attr_campaign_notes" placeholder="Important campaign events, NPC relationships, plot threads..." class="notes-text"></textarea>
+                    
+                    <h4>SECRETS & GOALS</h4>
+                    <textarea name="attr_secrets" placeholder="Character secrets, goals, and hidden motivations..." class="secrets-text"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Roll Templates -->
+    <rolltemplate class="sheet-rolltemplate-ce-throwdown">
+        <div class="template-container throwdown-template">
+            <div class="template-header">
+                <h3>{{character}} - THROW DOWN</h3>
+            </div>
+            <div class="template-body">
+                <div class="roll-result">
+                    <span class="action-die">Action: {{action}}</span>
+                    <span class="aspect-die">Aspect: {{aspect}}</span>
+                </div>
+                <div class="success-count">
+                    <strong>Successes: {{#rollTotal() action aspect}}{{/rollTotal()}}</strong>
+                </div>
+            </div>
+        </div>
+    </rolltemplate>
+
+    <rolltemplate class="sheet-rolltemplate-ce-trait">
+        <div class="template-container trait-template">
+            <div class="template-header">
+                <h3>{{character}} - {{action}}</h3>
+            </div>
+            <div class="template-body">
+                <div class="trait-bid">
+                    <strong>{{trait}}</strong>
+                </div>
+                {{#description}}
+                <div class="trait-description">
+                    {{description}}
+                </div>
+                {{/description}}
+            </div>
+        </div>
+    </rolltemplate>
+
+    <rolltemplate class="sheet-rolltemplate-ce-gear">
+        <div class="template-container gear-template">
+            <div class="template-header">
+                <h3>{{character}} - BIDS GEAR</h3>
+            </div>
+            <div class="template-body">
+                <div class="gear-bid">
+                    <strong>{{gear}}</strong> - {{roll}}
+                </div>
+            </div>
+        </div>
+    </rolltemplate>
+
+    <rolltemplate class="sheet-rolltemplate-ce-roll">
+        <div class="template-container basic-template">
+            <div class="template-header">
+                <h3>{{character}} - {{action}}</h3>
+            </div>
+            <div class="template-body">
+                <div class="roll-result">
+                    {{result}}
+                </div>
+            </div>
+        </div>
+    </rolltemplate>
+</body>
+</html>
